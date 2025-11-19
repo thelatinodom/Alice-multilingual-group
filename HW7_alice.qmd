@@ -1,5 +1,6 @@
 ---
 title: "HW7_alice"
+date: "2025-11-19"
 format: html
 ---
 
