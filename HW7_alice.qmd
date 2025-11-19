@@ -4,3 +4,6 @@ date: "2025-11-19"
 format: html
 ---
 
+```{python}
+print("This is a test to see if the push works")
+```
