@@ -1,7 +1,15 @@
+---
+title: "dom"
+format: html
+---
 
+```{python}
 
 with open("data/alice_english.txt", "r", encoding="utf-8") as f:
     alice_english = f.read()
+
+
+
 
 with open("data/alice_italian.txt", "r", encoding= "utf-8") as f: 
    alice_italian = f.read()
@@ -18,6 +26,23 @@ with open("data/alice_french.txt", "r", encoding= "utf-8") as f:
 # Preview first 200 characters
 print(alice_english[:200])
 
+```
 
+```{python}
+import re 
+alice_english = re.split(r"[s\W]+", mediavelchurch)
+Med_clean = [w for w in Med if w]
+Med_clean= [w.lower() for w in Med]
 
+print(Med_clean[:100])
 
+print(len(Med_clean))
+
+Rom = re.split(r"[s\W]+", Rom)
+Rom_clean = [w for w in Rom if w]
+Rom_clean= [w.lower() for w in Rom]
+
+print(Rom_clean[:100])
+
+print(len(Rom_clean))
+```
