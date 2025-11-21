@@ -10,18 +10,18 @@ print("This is a test to see if the push works")
 
 ```{python}
 #PART 0 - SETTING UP DOCUMENT
-with open("Yankee.txt", "r", encoding="utf-8") as f:
+with open("data/alice_english.txt", "r", encoding="utf-8") as f:
     text = f.read()
     
-start = "Yankee.txt"
-end = "Yankee_clean.txt"
+start = "data/alice_english.txt"
+end = "data/alice_english_clean.txt"
 
 with open(start, "r", encoding="utf-8") as f:
     text = f.read()
 
 # --- Identify Gutenberg markers ---
-strtmkr = "*** START OF THE PROJECT GUTENBERG EBOOK A CONNECTICUT YANKEE IN KING ARTHUR'S COURT ***"
-endmkr = "*** END OF THE PROJECT GUTENBERG EBOOK A CONNECTICUT YANKEE IN KING ARTHUR'S COURT ***"
+strtmkr = "*** START OF THE PROJECT GUTENBERG EBOOK ALICE'S ADVENTURES IN WONDERLAND ***"
+endmkr = "*** END OF THE PROJECT GUTENBERG EBOOK ALICE'S ADVENTURES IN WONDERLAND ***"
 
 # --- Find where the real book content begins and ends ---
 strtid = text.find(strtmkr)
