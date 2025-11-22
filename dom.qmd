@@ -197,8 +197,46 @@ with open(start, "r", encoding="utf-8") as f:
     text = f.read()
 
 # --- Identify Gutenberg markers ---
-strtmkr = "*** START OF THE PROJECT GUTENBERG EBOOK AVENTURES D'ALICE AU PAYS DES MERVEILLES ***"
-endmkr = "*** END OF THE PROJECT GUTENBERG EBOOK AVENTURES D'ALICE AU PAYS DES MERVEILLES ***"
+strtmkr = "*** START OF THE PROJECT GUTENBERG EBOOK LE AVVENTURE D'ALICE NEL PAESE DELLE MERAVIGLIE ***"
+endmkr = "*** END OF THE PROJECT GUTENBERG EBOOK LE AVVENTURE D'ALICE NEL PAESE DELLE MERAVIGLIE ***"
+
+# --- Find where the real book content begins and ends ---
+strtid = text.find(strtmkr)
+endid = text.find(endmkr)
+
+if strtid != -1:
+    # Move to end of start marker line
+    strtid = text.find("\n", strtid) + 1  
+
+if endid != -1:
+    # End right before the end marker
+    text_clean = text[strtid:endid].strip()
+else:
+    text_clean = text[strtid:].strip()
+
+# --- Save the cleaned version ---
+
+with open(end, "w", encoding="utf-8") as f:
+    f.write(text_clean)
+
+print("Cleaned file saved as:", end)
+print("----")
+```
+
+```{python}
+#PART 0 - SETTING UP DOCUMENT
+with open("data/alice_spanish.txt", "r", encoding="utf-8") as f:
+    text = f.read()
+    
+start = "data/alice_spanish.txt"
+end = "data/alice_spanish_clean.txt"
+
+with open(start, "r", encoding="utf-8") as f:
+    text = f.read()
+
+# --- Identify Gutenberg markers ---
+strtmkr = "*** START OF THE PROJECT GUTENBERG EBOOK LE AVVENTURE D'ALICE NEL PAESE DELLE MERAVIGLIE ***"
+endmkr = "*** END OF THE PROJECT GUTENBERG EBOOK LE AVVENTURE D'ALICE NEL PAESE DELLE MERAVIGLIE ***"
 
 # --- Find where the real book content begins and ends ---
 strtid = text.find(strtmkr)
