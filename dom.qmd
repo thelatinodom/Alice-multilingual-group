@@ -216,8 +216,8 @@ with open(start, "r", encoding="utf-8") as f:
     text = f.read()
 
 # --- Identify Gutenberg markers ---
-strtmkr = "*** START OF THE PROJECT GUTENBERG EBOOK LE AVVENTURE D'ALICE NEL PAESE DELLE MERAVIGLIE ***"
-endmkr = "*** END OF THE PROJECT GUTENBERG EBOOK LE AVVENTURE D'ALICE NEL PAESE DELLE MERAVIGLIE ***"
+strtmkr = "*** LEWIS CARROLL  (1832-1898) ***"
+endmkr = "*** FIN ***"
 
 # --- Find where the real book content begins and ends ---
 strtid = text.find(strtmkr)
