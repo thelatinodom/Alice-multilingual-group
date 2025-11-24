@@ -48,13 +48,20 @@ else:
 
 # --- Save the cleaned version ---
 
+
 with open(end, "w", encoding="utf-8") as f:
     f.write(text_clean)
 
 print("Cleaned file saved as:", end)
 print("----")
 
+with open("data/alice_english_clean.txt", "r", encoding="utf-8") as f:
+    text_clean = f.read()
 
+alice_eng_words = re.split(r"[\s\W]+", text_clean)
+alice_eng_words = [w for w in alice_eng_words if w]
+alice_eng_clean = [w.lower() for w in alice_eng_words]
+print(alice_eng_clean[:100])
 
 
 # with open(end, "w", encoding="utf-8") as f:
@@ -231,13 +238,13 @@ print("----")
 
 ```{python}
 import re
-with open("idylls.txt", "r", encoding="utf-8") as f:
+with open("data/alice_english.txt", "r", encoding="utf-8") as f:
     idylls = f.read()
 
-idylls_words = re.split(r"[\s\W]+", idylls)
-idylls_words = [w for w in idylls_words if w]
-idylls_clean = [w.lower() for w in idylls_words]
-print(idylls_clean[:100])
+alice_eng_words = re.split(r"[\s\W]+", idylls)
+alice_eng_words = [w for w in idylls_words if w]
+alice_eng_clean = [w.lower() for w in idylls_words]
+print(alice_clean[:100])
 
 idylls_word_count = 0 
 for word in idylls_clean:
