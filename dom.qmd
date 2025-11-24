@@ -260,6 +260,8 @@ with open("data/alice_spanish_clean.txt")
 with open("data/alice_finnish_clean.txt")
 ```
 
+# Part one code
+
 ```{python}
 import spacy
 import pandas as pd
