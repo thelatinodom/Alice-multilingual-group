@@ -3,17 +3,6 @@ title: "dom"
 format: html
 ---
 
-```{python}
-
-```
-
-```{python}
-import re 
-
-```
-
-\^ What is this part for?
-
 # Eng Gut clean
 
 ```{python}
@@ -65,7 +54,7 @@ print(alice_eng_clean[:100])
 
 
 alice_eng_word_count = 0 
-for word in alice_eng_clean_clean:
+for word in alice_eng_clean:
   alice_eng_word_count = alice_eng_word_count + 1
 print(alice_eng_word_count) 
 
