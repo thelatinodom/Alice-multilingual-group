@@ -54,6 +54,8 @@ print(Rom_clean[:100])
 print(len(Rom_clean))
 ```
 
+^ What is this part for?
+
 ```{python}
 
 #PART 0 - SETTING UP DOCUMENT
