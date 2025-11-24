@@ -12,8 +12,8 @@ import re
 
 ```
 
-^ What is this part for?
-
+\^ What is this part for?
+# Eng Gut clean
 ```{python}
 
 #PART 0 - SETTING UP DOCUMENT
@@ -74,7 +74,7 @@ print(clilwom[:300])
 
 
 ```
-
+# Fin Gut clean
 ```{python}
 #PART 0 - SETTING UP DOCUMENT
 with open("data/alice_finnish.txt", "r", encoding="utf-8") as f:
@@ -112,7 +112,7 @@ with open(end, "w", encoding="utf-8") as f:
 print("Cleaned file saved as:", end)
 print("----")
 ```
-
+# Fre Gut clean
 ```{python}
 #PART 0 - SETTING UP DOCUMENT
 with open("data/alice_french.txt", "r", encoding="utf-8") as f:
@@ -150,7 +150,7 @@ with open(end, "w", encoding="utf-8") as f:
 print("Cleaned file saved as:", end)
 print("----")
 ```
-
+# Ita Gut clean
 ```{python}
 
 #PART 0 - SETTING UP DOCUMENT
@@ -189,7 +189,7 @@ with open(end, "w", encoding="utf-8") as f:
 print("Cleaned file saved as:", end)
 print("----")
 ```
-
+# Spa Gut clean
 ```{python}
 #PART 0 - SETTING UP DOCUMENT
 with open("data/alice_spanish.txt", "r", encoding="utf-8") as f:
