@@ -262,9 +262,8 @@ import spacy
 import pandas as pd
 from pathlib import Path
 
-# -------------------------------------------------------
 # 1. LOAD CLEANED TEXT FILES
-# -------------------------------------------------------
+
 
 files = {
     "English": "data/alice_english_clean.txt",
@@ -279,9 +278,8 @@ for lang, path in files.items():
     with open(path, "r", encoding="utf-8") as f:
         texts[lang] = f.read()
 
-# -------------------------------------------------------
 # 2. LOAD SPACY MODELS FOR EACH LANGUAGE
-# -------------------------------------------------------
+
 
 nlp_models = {
     "English": spacy.load("en_core_web_sm"),
@@ -292,9 +290,9 @@ nlp_models = {
     "Finnish": spacy.load("fi_core_news_sm")
 }
 
-# -------------------------------------------------------
+
 # 3. PROCESS TEXTS + COMPUTE STATS
-# -------------------------------------------------------
+
 
 def compute_stats(doc):
     # count alphabetic tokens only
@@ -328,9 +326,8 @@ for lang in texts:
     results["Lexical Diversity (TTR)"].append(round(ttr, 4))
     results["Sentences"].append(num_sentences)
 
-# -------------------------------------------------------
+
 # 4. CREATE TABLE
-# -------------------------------------------------------
 
 df = pd.DataFrame(results)
 print("\n===== CORPUS COMPARISON TABLE =====\n")
