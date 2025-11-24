@@ -13,7 +13,9 @@ import re
 ```
 
 \^ What is this part for?
+
 # Eng Gut clean
+
 ```{python}
 
 #PART 0 - SETTING UP DOCUMENT
@@ -74,7 +76,9 @@ print(clilwom[:300])
 
 
 ```
+
 # Fin Gut clean
+
 ```{python}
 #PART 0 - SETTING UP DOCUMENT
 with open("data/alice_finnish.txt", "r", encoding="utf-8") as f:
@@ -112,7 +116,9 @@ with open(end, "w", encoding="utf-8") as f:
 print("Cleaned file saved as:", end)
 print("----")
 ```
+
 # Fre Gut clean
+
 ```{python}
 #PART 0 - SETTING UP DOCUMENT
 with open("data/alice_french.txt", "r", encoding="utf-8") as f:
@@ -150,7 +156,9 @@ with open(end, "w", encoding="utf-8") as f:
 print("Cleaned file saved as:", end)
 print("----")
 ```
+
 # Ita Gut clean
+
 ```{python}
 
 #PART 0 - SETTING UP DOCUMENT
@@ -189,7 +197,9 @@ with open(end, "w", encoding="utf-8") as f:
 print("Cleaned file saved as:", end)
 print("----")
 ```
+
 # Spa Gut clean
+
 ```{python}
 #PART 0 - SETTING UP DOCUMENT
 with open("data/alice_spanish.txt", "r", encoding="utf-8") as f:
@@ -226,4 +236,20 @@ with open(end, "w", encoding="utf-8") as f:
 
 print("Cleaned file saved as:", end)
 print("----")
+```
+
+```{python}
+import re
+with open("idylls.txt", "r", encoding="utf-8") as f:
+    idylls = f.read()
+
+idylls_words = re.split(r"[\s\W]+", idylls)
+idylls_words = [w for w in idylls_words if w]
+idylls_clean = [w.lower() for w in idylls_words]
+print(idylls_clean[:100])
+
+idylls_word_count = 0 
+for word in idylls_clean:
+  idylls_word_count = idylls_word_count + 1
+print(idylls_word_count) 
 ```
