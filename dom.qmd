@@ -232,19 +232,7 @@ print("----")
 ```
 
 ```{python}
-import re
-with open("data/alice_english.txt", "r", encoding="utf-8") as f:
-    idylls = f.read()
-
-alice_eng_words = re.split(r"[\s\W]+", idylls)
-alice_eng_words = [w for w in idylls_words if w]
-alice_eng_clean = [w.lower() for w in idylls_words]
-print(alice_clean[:100])
-
-idylls_word_count = 0 
-for word in idylls_clean:
-  idylls_word_count = idylls_word_count + 1
-print(idylls_word_count) 
+#redundant cell
 ```
 
 # Dom's work
