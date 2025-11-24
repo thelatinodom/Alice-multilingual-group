@@ -96,6 +96,13 @@ print("----")
 
 
 
+with open("bwolf.txt", "r", encoding="utf-8") as f:
+  bwolf = f.read()
+  
+wordslw = re.split(r"[\s\W]+", LilWomen) 
+  
+clilwom = [wd.strip().lower() for wd in wordslw]
+print(clilwom[:300])
 
 
 
