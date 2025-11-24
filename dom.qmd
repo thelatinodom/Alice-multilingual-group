@@ -64,6 +64,12 @@ alice_eng_clean = [w.lower() for w in alice_eng_words]
 print(alice_eng_clean[:100])
 
 
+alice_eng_word_count = 0 
+for word in alice_eng_clean_clean:
+  alice_eng_word_count = alice_eng_word_count + 1
+print(alice_eng_word_count) 
+
+
 # with open(end, "w", encoding="utf-8") as f:
 #     f.write(text_clean)
 # 
