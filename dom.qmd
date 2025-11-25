@@ -6,9 +6,13 @@ format: html
 
 ```{python}
 
+import re
+
+
+
 #PART 0 - SETTING UP DOCUMENT
-with open("data/alice_english.txt", "r", encoding="utf-8") as f:
-    text = f.read()
+#with open("data/alice_english.txt", "r", encoding="utf-8") as f:
+    #text = f.read()
     
 start = "data/alice_english.txt"
 end = "data/alice_english_clean.txt"
@@ -21,18 +25,41 @@ strtmkr = "*** START OF THE PROJECT GUTENBERG EBOOK ALICE'S ADVENTURES IN WONDER
 endmkr = "*** END OF THE PROJECT GUTENBERG EBOOK ALICE'S ADVENTURES IN WONDERLAND ***"
 
 # --- Find where the real book content begins and ends ---
+#strtid = text.find(strtmkr)
+#endid = text.find(endmkr)
+
+#if strtid != -1:
+    # Move to end of start marker line
+    #strtid = text.find("\n", strtid) + 1  
+
+#if endid != -1:
+    # End right before the end marker
+    #text_clean = text[strtid:endid].strip()
+#else:
+    #text_clean = text[strtid:].strip()
+    
+    
 strtid = text.find(strtmkr)
 endid = text.find(endmkr)
 
+# If the start marker is found, move to end of its line
 if strtid != -1:
-    # Move to end of start marker line
-    strtid = text.find("\n", strtid) + 1  
-
-if endid != -1:
-    # End right before the end marker
-    text_clean = text[strtid:endid].strip()
+    strtid = text.find("\n", strtid) + 1
 else:
-    text_clean = text[strtid:].strip()
+    strtid = 0  # start from beginning if not found
+
+# If the end marker is not found, just go to the end of the text
+if endid == -1:
+    endid = len(text)
+
+text_clean = text[strtid:endid].strip()
+
+    
+    
+    
+    
+    
+    
 
 # --- Save the cleaned version ---
 
@@ -46,16 +73,21 @@ print("----")
 with open("data/alice_english_clean.txt", "r", encoding="utf-8") as f:
     text_clean = f.read()
 
-alice_eng_words = re.split(r"[\s\W]+", text_clean)
-alice_eng_words = [w for w in alice_eng_words if w]
-alice_eng_clean = [w.lower() for w in alice_eng_words]
+#alice_eng_words = re.split(r"[\s\W]+", text_clean)
+#alice_eng_words = [w for w in alice_eng_words if w]
+#alice_eng_clean = [w.lower() for w in 
+#alice_eng_words]
+
+alice_eng_clean = [w.lower() for w in re.split(r"[\s\W]+", text_clean) if w]
+
+
+
 print(alice_eng_clean[:100])
 
 
-alice_eng_word_count = 0 
-for word in alice_eng_clean_clean:
-  alice_eng_word_count = alice_eng_word_count + 1
-print(alice_eng_word_count) 
+alice_eng_word_count = len(alice_eng_clean)
+print(alice_eng_word_count)
+
 
 
 # with open(end, "w", encoding="utf-8") as f:
@@ -72,6 +104,20 @@ print(alice_eng_word_count)
 # Fin Gut clean
 
 ```{python}
+
+
+# Tokenize and lowercase words
+alice_fi_clean = [w.lower() for w in re.split(r"[\s\W]+", text_clean) if w]
+
+# Print first 100 words
+print(alice_fi_clean[:100])
+
+# Count total words
+alice_fi_word_count = len(alice_fi_clean)
+print(alice_fi_word_count)
+
+
+
 #PART 0 - SETTING UP DOCUMENT
 with open("data/alice_finnish.txt", "r", encoding="utf-8") as f:
     text = f.read()
@@ -107,7 +153,20 @@ with open(end, "w", encoding="utf-8") as f:
 
 print("Cleaned file saved as:", end)
 print("----")
-```
+
+
+import re
+
+# Tokenize and lowercase words
+alice_fi_clean = [w.lower() for w in re.split(r"[\s\W]+", text_clean) if w]
+
+# Print first 100 words
+print(alice_fi_clean[:100])
+
+# Count total words
+alice_fi_word_count = len(alice_fi_clean)
+print(alice_fi_word_count)
+
 
 # Fre Gut clean
 
@@ -147,7 +206,35 @@ with open(end, "w", encoding="utf-8") as f:
 
 print("Cleaned file saved as:", end)
 print("----")
+
+import re
+
+# Tokenize and lowercase words
+alice_fr_clean = [w.lower() for w in re.split(r"[\s\W]+", text_clean) if w]
+
+# Print first 100 words
+print(alice_fr_clean[:100])
+
+# Count total words
+alice_fr_word_count = len(alice_fr_clean)
+print(alice_fr_word_count)
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Ita Gut clean
 
@@ -188,6 +275,21 @@ with open(end, "w", encoding="utf-8") as f:
 
 print("Cleaned file saved as:", end)
 print("----")
+
+import re
+
+# Tokenize and lowercase words
+alice_it_clean = [w.lower() for w in re.split(r"[\s\W]+", text_clean) if w]
+
+# Print first 100 words
+print(alice_it_clean[:100])
+
+# Count total words
+alice_it_word_count = len(alice_it_clean)
+print(alice_it_word_count)
+
+
+
 ```
 
 # Spa Gut clean
@@ -228,7 +330,27 @@ with open(end, "w", encoding="utf-8") as f:
 
 print("Cleaned file saved as:", end)
 print("----")
+
+import re
+
+# Tokenize and lowercase words
+alice_es_clean = [w.lower() for w in re.split(r"[\s\W]+", text_clean) if w]
+
+# Print first 100 words
+print(alice_es_clean[:100])
+
+# Count total words
+alice_es_word_count = len(alice_es_clean)
+print(alice_es_word_count)
+
+
+
+
+
 ```
+
+
+
 
 ```{python}
 <<<<<<< HEAD
@@ -256,6 +378,13 @@ with open("data/alice_finnish_clean.txt")
 
 
 ```
+
+
+
+
+
+
+
 
 ```{python}
 import spacy
