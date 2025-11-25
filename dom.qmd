@@ -3,18 +3,6 @@ title: "dom"
 format: html
 ---
 
-```{python}
-
-```
-
-```{python}
-import re 
-
-```
-
-\^ What is this part for?
-
-# Eng Gut clean
 
 ```{python}
 
@@ -243,6 +231,7 @@ print("----")
 ```
 
 ```{python}
+<<<<<<< HEAD
 import re
 with open("data/alice_english.txt", "r", encoding="utf-8") as f:
     idylls = f.read()
@@ -256,4 +245,96 @@ idylls_word_count = 0
 for word in idylls_clean:
   idylls_word_count = idylls_word_count + 1
 print(idylls_word_count) 
+=======
+with open("data/alice_english_clean.txt")
+with open("data/alice_italian_clean.txt")
+with open("data/alice_french_clean.txt")
+with open("data/alice_spanish_clean.txt")
+with open("data/alice_finnish_clean.txt")
+
+
+
+
+```
+
+```{python}
+import spacy
+import pandas as pd
+from pathlib import Path
+
+# -------------------------------------------------------
+# 1. LOAD CLEANED TEXT FILES
+# -------------------------------------------------------
+
+files = {
+    "English": "data/alice_english_clean.txt",
+    "Italian": "data/alice_italian_clean.txt",
+    "Spanish": "data/alice_spanish_clean.txt",
+    "French":  "data/alice_french_clean.txt",
+    "Finnish": "data/alice_finnish_clean.txt"
+}
+
+texts = {}
+for lang, path in files.items():
+    with open(path, "r", encoding="utf-8") as f:
+        texts[lang] = f.read()
+
+# -------------------------------------------------------
+# 2. LOAD SPACY MODELS FOR EACH LANGUAGE
+# -------------------------------------------------------
+
+nlp_models = {
+    "English": spacy.load("en_core_web_sm"),
+    "Italian": spacy.load("it_core_news_sm"),
+    "Spanish": spacy.load("es_core_news_sm"),
+    "French":  spacy.load("fr_core_news_sm"),
+    # Finnish does not have an official model; use 'fi_core_news_sm' if installed
+    "Finnish": spacy.load("fi_core_news_sm")
+}
+
+# -------------------------------------------------------
+# 3. PROCESS TEXTS + COMPUTE STATS
+# -------------------------------------------------------
+
+def compute_stats(doc):
+    # count alphabetic tokens only
+    tokens = [t for t in doc if t.is_alpha]
+
+    num_tokens = len(tokens)
+    unique_lemmas = len(set(t.lemma_.lower() for t in tokens))
+    ttr = unique_lemmas / num_tokens if num_tokens > 0 else 0
+    num_sentences = len(list(doc.sents))
+
+    return num_tokens, unique_lemmas, ttr, num_sentences
+
+results = {
+    "Language": [],
+    "Total Tokens": [],
+    "Unique Lemmas": [],
+    "Lexical Diversity (TTR)": [],
+    "Sentences": []
+}
+
+for lang in texts:
+    print(f"Processing {lang}…")
+    nlp = nlp_models[lang]
+    doc = nlp(texts[lang])
+
+    num_tokens, unique_lemmas, ttr, num_sentences = compute_stats(doc)
+
+    results["Language"].append(lang)
+    results["Total Tokens"].append(num_tokens)
+    results["Unique Lemmas"].append(unique_lemmas)
+    results["Lexical Diversity (TTR)"].append(round(ttr, 4))
+    results["Sentences"].append(num_sentences)
+
+# -------------------------------------------------------
+# 4. CREATE TABLE
+# -------------------------------------------------------
+
+df = pd.DataFrame(results)
+print("\n===== CORPUS COMPARISON TABLE =====\n")
+print(df)
+
+>>>>>>> 8e83384 (Doing these tasks: Manually remove headers and footers. Then, load and clean all language files and tokenize using the appropriate spaCy pipeline for each language.)
 ```
