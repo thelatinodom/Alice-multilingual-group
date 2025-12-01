@@ -8,6 +8,10 @@ format: html
 
 import re
 
+import spacy
+
+# Load English spaCy model
+nlp_en = spacy.load("en_core_web_sm")
 
 
 #PART 0 - SETTING UP DOCUMENT
