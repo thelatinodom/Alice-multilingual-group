@@ -171,14 +171,11 @@ print(alice_fi_clean[:100])
 alice_fi_word_count = len(alice_fi_clean)
 print(alice_fi_word_count)
 
+```
+
 
 # Fre Gut clean
-
-
-
-
-
-
+```{python}
 #PART 0 - SETTING UP DOCUMENT
 with open("data/alice_french.txt", "r", encoding="utf-8") as f:
     text = f.read()
@@ -227,18 +224,7 @@ print(alice_fr_clean[:100])
 alice_fr_word_count = len(alice_fr_clean)
 print(alice_fr_word_count)
 
-
-
-
-
-
-
-
-
-
-
-
-
+```
 
 
 # Ita Gut clean
