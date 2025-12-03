@@ -3,7 +3,7 @@ title: "dom"
 format: html
 ---
 
-
+# Eng Gut clean
 ```{python}
 
 import re
@@ -105,7 +105,7 @@ print(alice_eng_word_count)
 
 ```
 
-# Fin Gut clean
+# Fin and Fre Gut clean
 
 ```{python}
 
@@ -174,7 +174,11 @@ print(alice_fi_word_count)
 
 # Fre Gut clean
 
-```{python}
+
+
+
+
+
 #PART 0 - SETTING UP DOCUMENT
 with open("data/alice_french.txt", "r", encoding="utf-8") as f:
     text = f.read()
@@ -222,9 +226,6 @@ print(alice_fr_clean[:100])
 # Count total words
 alice_fr_word_count = len(alice_fr_clean)
 print(alice_fr_word_count)
-```
-
-
 
 
 
@@ -354,7 +355,7 @@ print(alice_es_word_count)
 ```
 
 
-
+# splitting
 
 ```{python}
 <<<<<<< HEAD
