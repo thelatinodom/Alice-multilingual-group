@@ -105,7 +105,7 @@ print(alice_eng_word_count)
 
 ```
 
-# Fin and Fre Gut clean
+# Fin Gut clean
 
 ```{python}
 
@@ -369,11 +369,6 @@ with open("data/alice_finnish_clean.txt")
 
 
 ```
-
-
-
-
-
 
 
 
