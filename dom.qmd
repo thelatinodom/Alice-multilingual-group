@@ -285,60 +285,34 @@ print(alice_it_word_count)
 
 # Spa Gut clean
 
+
 ```{python}
-#PART 0 - SETTING UP DOCUMENT
-with open("data/alice_spanish.txt", "r", encoding="utf-8") as f:
-    text = f.read()
-    
-start = "data/alice_spanish.txt"
-end = "data/alice_spanish_clean.txt"
-
-with open(start, "r", encoding="utf-8") as f:
-    text = f.read()
-
-# --- Identify Gutenberg markers ---
-strtmkr = "*** LEWIS CARROLL  (1832-1898) ***"
-endmkr = "*** FIN ***"
-
-# --- Find where the real book content begins and ends ---
-strtid = text.find(strtmkr)
-endid = text.find(endmkr)
-
-if strtid != -1:
-    # Move to end of start marker line
-    strtid = text.find("\n", strtid) + 1  
-
-if endid != -1:
-    # End right before the end marker
-    text_clean = text[strtid:endid].strip()
-else:
-    text_clean = text[strtid:].strip()
-
-# --- Save the cleaned version ---
-
-with open(end, "w", encoding="utf-8") as f:
-    f.write(text_clean)
-
-print("Cleaned file saved as:", end)
-print("----")
-
 import re
 
-# Tokenize and lowercase words
-alice_es_clean = [w.lower() for w in re.split(r"[\s\W]+", text_clean) if w]
-
-# Print first 100 words
-print(alice_es_clean[:100])
-
-# Count total words
-alice_es_word_count = len(alice_es_clean)
-print(alice_es_word_count)
+# Load original file
+with open("data/alice_spanish.txt", "r", encoding="utf-8") as f:
+    text = f.read()
 
 
+text_clean = text
 
+# Save cleaned text
+with open("data/alice_spanish_clean.txt", "w", encoding="utf-8") as f:
+    f.write(text_clean)
+
+print("Cleaned file saved as: data/alice_spanish_clean.txt")
+
+# Tokenize everything into lowercase words
+words = [w.lower() for w in re.split(r"[\s\W]+", text_clean) if w]
+
+# Print diagnostics
+print("First 100 words:", words[:100])
+print("Total word count:", len(words))
 
 
 ```
+
+
 
 
 # splitting
