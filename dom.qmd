@@ -317,32 +317,39 @@ print("Total word count:", len(words))
 
 # splitting
 
+
+
 ```{python}
-<<<<<<< HEAD
 import re
-with open("data/alice_english.txt", "r", encoding="utf-8") as f:
-    idylls = f.read()
 
-alice_eng_words = re.split(r"[\s\W]+", idylls)
-alice_eng_words = [w for w in idylls_words if w]
-alice_eng_clean = [w.lower() for w in idylls_words]
-print(alice_clean[:100])
+def load_and_tokenize(path):
+    with open(path, "r", encoding="utf-8") as f:
+        text = f.read()
 
-idylls_word_count = 0 
-for word in idylls_clean:
-  idylls_word_count = idylls_word_count + 1
-print(idylls_word_count) 
-=======
-with open("data/alice_english_clean.txt")
-with open("data/alice_italian_clean.txt")
-with open("data/alice_french_clean.txt")
-with open("data/alice_spanish_clean.txt")
-with open("data/alice_finnish_clean.txt")
+    # split by whitespace + punctuation
+    words = re.split(r"[\s\W]+", text)
+    words = [w.lower() for w in words if w]  # remove empty strings + lowercase
+    return words
 
+# Load all five languages
+alice_english  = load_and_tokenize("data/alice_english_clean.txt")
+alice_italian  = load_and_tokenize("data/alice_italian_clean.txt")
+alice_french   = load_and_tokenize("data/alice_french_clean.txt")
+alice_spanish  = load_and_tokenize("data/alice_spanish_clean.txt")
+alice_finnish  = load_and_tokenize("data/alice_finnish_clean.txt")
 
+# output
+print("First 100 English words:", alice_english[:100])
+print("English word count:", len(alice_english))
 
+print("Italian word count:", len(alice_italian))
+print("French word count:", len(alice_french))
+print("Spanish word count:", len(alice_spanish))
+print("Finnish word count:", len(alice_finnish))
 
 ```
+
+
 
 
 
@@ -422,5 +429,5 @@ df = pd.DataFrame(results)
 print("\n===== CORPUS COMPARISON TABLE =====\n")
 print(df)
 
->>>>>>> 8e83384 (Doing these tasks: Manually remove headers and footers. Then, load and clean all language files and tokenize using the appropriate spaCy pipeline for each language.)
+
 ```
