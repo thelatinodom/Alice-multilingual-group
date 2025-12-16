@@ -1,0 +1,387 @@
+---
+title: "erin_practice-hw7"
+format: html
+---
+
+Lemma Frequency:
+
+-   Top 20 content lemmas per language (exclude stopwords and punctuation).
+
+-   Visualize results in a word cloud for each language. Label each visualization clearly.
+
+Discuss any major differences you see between languages, if you find any.
+
+(Optional) You may also include a single bar chart comparing top lemmas across languages for a more quantitative view.
+
+SMOME OF DOM'S STUFF I THINK FOR MY REFERENCE
+
+```{python}
+import spacy
+import pandas as pd
+from pathlib import Path
+
+# -------------------------------------------------------
+# 1. LOAD CLEANED TEXT FILES
+# -------------------------------------------------------
+
+files = {
+    "English": "data/alice_english_clean.txt",
+    "Italian": "data/alice_italian_clean.txt",
+    "Spanish": "data/alice_spanish_clean.txt",
+    "French":  "data/alice_french_clean.txt",
+    "Finnish": "data/alice_finnish_clean.txt"
+}
+
+texts = {}
+for lang, path in files.items():
+    with open(path, "r", encoding="utf-8") as f:
+        texts[lang] = f.read()
+
+# -------------------------------------------------------
+# 2. LOAD SPACY MODELS FOR EACH LANGUAGE
+# -------------------------------------------------------
+
+nlp_models = {
+    "English": spacy.load("en_core_web_sm"),
+    "Italian": spacy.load("it_core_news_sm"),
+    "Spanish": spacy.load("es_core_news_sm"),
+    "French":  spacy.load("fr_core_news_sm"),
+    # Finnish does not have an official model; use 'fi_core_news_sm' if installed
+    "Finnish": spacy.load("fi_core_news_sm")
+}
+
+# -------------------------------------------------------
+# 3. PROCESS TEXTS + COMPUTE STATS
+# -------------------------------------------------------
+
+def compute_stats(doc):
+    # count alphabetic tokens only
+    tokens = [t for t in doc if t.is_alpha]
+
+    num_tokens = len(tokens)
+    unique_lemmas = len(set(t.lemma_.lower() for t in tokens))
+    ttr = unique_lemmas / num_tokens if num_tokens > 0 else 0
+    num_sentences = len(list(doc.sents))
+
+    return num_tokens, unique_lemmas, ttr, num_sentences
+
+results = {
+    "Language": [],
+    "Total Tokens": [],
+    "Unique Lemmas": [],
+    "Lexical Diversity (TTR)": [],
+    "Sentences": []
+}
+
+for lang in texts:
+    print(f"Processing {lang}…")
+    nlp = nlp_models[lang]
+    doc = nlp(texts[lang])
+
+    num_tokens, unique_lemmas, ttr, num_sentences = compute_stats(doc)
+
+    results["Language"].append(lang)
+    results["Total Tokens"].append(num_tokens)
+    results["Unique Lemmas"].append(unique_lemmas)
+    results["Lexical Diversity (TTR)"].append(round(ttr, 4))
+    results["Sentences"].append(num_sentences)
+
+# -------------------------------------------------------
+# 4. CREATE TABLE
+# -------------------------------------------------------
+
+df = pd.DataFrame(results)
+print("\n===== CORPUS COMPARISON TABLE =====\n")
+print(df)
+
+
+```
+
+MY STUFF
+
+```{python}
+import spacy
+from nltk.corpus import wordnet as wn
+import pandas as pd
+import matplotlib.pyplot as plt
+import nltk
+from collections import Counter
+import itertools
+from wordcloud import WordCloud
+import numpy as np
+
+#ENG
+with open("data/alice_english_clean.txt", "r", encoding="utf-8") as f:
+    text = f.read()
+    
+nlp = spacy.load("en_core_web_sm")    
+doc = nlp(text)    
+
+content_pos = {"NOUN", "VERB", "ADJ", "ADV"}
+
+eng_lemma_list = [
+    (token.lemma_.lower(), token.pos_)
+    for token in doc
+    if token.pos_ in content_pos and token.is_alpha
+]
+
+eng_lemmas = [lemma for lemma, pos in eng_lemma_list]
+eng_lemma_freq = Counter(eng_lemmas)
+
+print("The top 20 Lemmas for English are",eng_lemma_freq.most_common(20))
+
+eng_df = pd.DataFrame(
+    eng_lemma_freq.items(),
+    columns=["lemma", "frequency"]
+)
+
+eng_df = eng_df.sort_values(by="frequency", ascending=False)
+
+print(eng_df.head(20))
+
+eng_top20 = eng_df.head(20)
+
+eng_freq = dict(zip(eng_top20["lemma"], eng_top20["frequency"]))
+
+eng_wc = WordCloud(
+    width=800,
+    height=400,
+    background_color="white"
+).generate_from_frequencies(eng_freq)
+
+plt.figure()
+plt.imshow(eng_wc, interpolation="bilinear")
+plt.axis("off")
+plt.title("Top 20 Lemmas – English Alice in Wonderland")
+plt.tight_layout()
+plt.show()
+
+print("--")
+
+
+#ITALIAN
+with open("data/alice_italian_clean.txt", "r", encoding="utf-8") as f:
+    text = f.read()
+    
+nlp = spacy.load("it_core_news_sm")    
+doc = nlp(text)    
+
+content_pos = {"NOUN", "VERB", "ADJ", "ADV"}
+
+it_lemma_list = [
+    (token.lemma_.lower(), token.pos_)
+    for token in doc
+    if token.pos_ in content_pos and token.is_alpha
+]
+
+it_lemmas = [lemma for lemma, pos in it_lemma_list]
+it_lemma_freq = Counter(it_lemmas)
+
+print("The top 20 Lemmas for Italian are", it_lemma_freq.most_common(20))
+
+it_df = pd.DataFrame(
+    it_lemma_freq.items(),
+    columns=["lemma", "frequency"]
+)
+
+it_df = it_df.sort_values(by="frequency", ascending=False)
+
+print(it_df.head(20))
+
+it_top20 = it_df.head(20)
+
+it_freq = dict(zip(it_top20["lemma"], it_top20["frequency"]))
+
+it_wc = WordCloud(
+    width=800,
+    height=400,
+    background_color="white"
+).generate_from_frequencies(it_freq)
+
+plt.figure()
+plt.imshow(it_wc, interpolation="bilinear")
+plt.axis("off")
+plt.title("Top 20 Lemmas – Italian Alice in Wonderland")
+plt.tight_layout()
+plt.show()
+
+print("--")
+
+#SPANISH
+with open("data/alice_spanish_clean.txt", "r", encoding="utf-8") as f:
+    text = f.read()
+    
+nlp = spacy.load("es_core_news_sm")    
+doc = nlp(text)    
+
+content_pos = {"NOUN", "VERB", "ADJ", "ADV"}
+
+spa_lemma_list = [
+    (token.lemma_.lower(), token.pos_)
+    for token in doc
+    if token.pos_ in content_pos and token.is_alpha
+]
+
+spa_lemmas = [lemma for lemma, pos in spa_lemma_list]
+spa_lemma_freq = Counter(spa_lemmas)
+
+print("The top 20 Lemmas for Spanish are", spa_lemma_freq.most_common(20))
+
+spa_df = pd.DataFrame(
+    spa_lemma_freq.items(),
+    columns=["lemma", "frequency"]
+)
+
+spa_df = spa_df.sort_values(by="frequency", ascending=False)
+
+print(spa_df.head(20))
+
+spa_top20 = spa_df.head(20)
+
+spa_freq = dict(zip(spa_top20["lemma"], spa_top20["frequency"]))
+
+spa_wc = WordCloud(
+    width=800,
+    height=400,
+    background_color="white"
+).generate_from_frequencies(spa_freq)
+
+plt.figure()
+plt.imshow(spa_wc, interpolation="bilinear")
+plt.axis("off")
+plt.title("Top 20 Lemmas – Spanish Alice in Wonderland")
+plt.tight_layout()
+plt.show()
+
+print("--")
+
+#FRENCH
+with open("data/alice_french_clean.txt", "r", encoding="utf-8") as f:
+    text = f.read()
+
+nlp = spacy.load("fr_core_news_sm")    
+doc = nlp(text)    
+
+content_pos = {"NOUN", "VERB", "ADJ", "ADV"}
+
+fr_lemma_list = [
+    (token.lemma_.lower(), token.pos_)
+    for token in doc
+    if token.pos_ in content_pos and token.is_alpha
+]
+
+fr_lemmas = [lemma for lemma, pos in fr_lemma_list]
+fr_lemma_freq = Counter(fr_lemmas)
+
+print("The top 20 Lemmas for French are", fr_lemma_freq.most_common(20))
+
+fr_df = pd.DataFrame(
+    fr_lemma_freq.items(),
+    columns=["lemma", "frequency"]
+)
+
+fr_df = fr_df.sort_values(by="frequency", ascending=False)
+
+print(fr_df.head(20))
+
+fr_top20 = fr_df.head(20)
+
+fr_freq = dict(zip(fr_top20["lemma"], fr_top20["frequency"]))
+
+fr_wc = WordCloud(
+    width=800,
+    height=400,
+    background_color="white"
+).generate_from_frequencies(fr_freq)
+
+plt.figure()
+plt.imshow(fr_wc, interpolation="bilinear")
+plt.axis("off")
+plt.title("Top 20 Lemmas – French Alice in Wonderland")
+plt.tight_layout()
+plt.show()
+
+print("--")
+
+#FINNISH
+with open("data/alice_finnish_clean.txt", "r", encoding="utf-8") as f:
+    text = f.read()
+    
+nlp = spacy.load("fi_core_news_sm")    
+doc = nlp(text)    
+
+content_pos = {"NOUN", "VERB", "ADJ", "ADV"}
+
+fin_lemma_list = [
+    (token.lemma_.lower(), token.pos_)
+    for token in doc
+    if token.pos_ in content_pos and token.is_alpha
+]
+
+fin_lemmas = [lemma for lemma, pos in fin_lemma_list]
+fin_lemma_freq = Counter(fin_lemmas)
+
+print("The top 20 Lemmas for Finnish are", fin_lemma_freq.most_common(20))
+
+fin_df = pd.DataFrame(
+    fin_lemma_freq.items(),
+    columns=["lemma", "frequency"]
+)
+
+fin_df = fin_df.sort_values(by="frequency", ascending=False)
+
+print(fin_df.head(20))
+
+fin_top20 = fin_df.head(20)
+
+fin_freq = dict(zip(fin_top20["lemma"], fin_top20["frequency"]))
+
+fin_wc = WordCloud(
+    width=800,
+    height=400,
+    background_color="white"
+).generate_from_frequencies(fin_freq)
+
+plt.figure()
+plt.imshow(fin_wc, interpolation="bilinear")
+plt.axis("off")
+plt.title("Top 20 Lemmas – Finnish Alice in Wonderland")
+plt.tight_layout()
+plt.show()
+
+print("----")
+
+fig, axes = plt.subplots(1, 5, figsize=(40, 10))  
+
+# English
+axes[0].barh(eng_top20["lemma"][::-1], eng_top20["frequency"][::-1], color='blue')
+axes[0].set_title("English")
+axes[0].set_xlabel("Frequency")
+
+# Italian
+axes[1].barh(it_top20["lemma"][::-1], it_top20["frequency"][::-1], color='green')
+axes[1].set_title("Italian")
+axes[1].set_xlabel("Frequency")
+
+# Spanish
+axes[2].barh(spa_top20["lemma"][::-1], spa_top20["frequency"][::-1], color='red')
+axes[2].set_title("Spanish")
+axes[2].set_xlabel("Frequency")
+
+# French
+axes[3].barh(fr_top20["lemma"][::-1], fr_top20["frequency"][::-1], color='purple')
+axes[3].set_title("French")
+axes[3].set_xlabel("Frequency")
+
+# Finnish
+axes[4].barh(fin_top20["lemma"][::-1], fin_top20["frequency"][::-1], color='orange')
+axes[4].set_title("Finnish")
+axes[4].set_xlabel("Frequency")
+
+fig.suptitle( "Top 20 Most Frequent Content Lemmas Across Languages – Alice in Wonderland", fontsize=18)
+
+fig.subplots_adjust(wspace=1.1, top=0.85)  
+
+plt.show()
+
+```
