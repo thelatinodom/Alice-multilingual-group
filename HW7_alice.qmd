@@ -365,6 +365,8 @@ for lang in texts:
 df = pd.DataFrame(results)
 print("\n===== CORPUS COMPARISON TABLE =====\n")
 print(df)
+# saving the dataframe
+df.to_csv('figures/Section1_DataFrame.csv')
 
 
 ```
