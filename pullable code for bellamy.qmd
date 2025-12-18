@@ -3,3 +3,25 @@ title: "pullable code for bellamy"
 format: html
 ---
 
+```{python}
+#ENG
+with open("data/alice_english_clean.txt", "r", encoding="utf-8") as f:
+    text = f.read()
+    
+nlp = spacy.load("en_core_web_sm")    
+doc = nlp(text)    
+
+content_pos = {"NOUN", "VERB", "ADJ", "ADV"}
+
+eng_lemma_list = [
+    (token.lemma_.lower(), token.pos_)
+    for token in doc
+    if token.pos_ in content_pos and token.is_alpha
+]
+
+eng_lemmas = [lemma for lemma, pos in eng_lemma_list]
+```
+
+this is the section for the english, similar set up for other lang variable names in their sections.
+
+don't forget to import all things may need

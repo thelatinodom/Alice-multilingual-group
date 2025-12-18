@@ -9,13 +9,6 @@ format: html
 ## Eng Gut Clean
 
 ```{python}
-SECTION 1: DOM LUTHJE 
----
-title: "HW7_alice"
-date: "2025-11-19"
-format: html
----
-
 import re
 import spacy
 
@@ -136,7 +129,7 @@ with open(start, "r", encoding="utf-8") as f:
     text = f.read()
 
 # --- Identify Gutenberg markers ---
-strtmkr = "*** START OF THE PROJECT GUTENBERG EBOOK AVENTURES D'ALICE AU PAYS DES MERVEILLES ***"
+strtmkr = " La liste des modifications se trouve à la fin du texte."
 endmkr = "*** END OF THE PROJECT GUTENBERG EBOOK AVENTURES D'ALICE AU PAYS DES MERVEILLES ***"
 
 # --- Find where the real book content begins and ends ---
@@ -190,7 +183,7 @@ with open(start, "r", encoding="utf-8") as f:
     text = f.read()
 
 # --- Identify Gutenberg markers ---
-strtmkr = "*** START OF THE PROJECT GUTENBERG EBOOK LE AVVENTURE D'ALICE NEL PAESE DELLE MERAVIGLIE ***"
+strtmkr = "http://www.archive.org/details/leavventuredalic00carr"
 endmkr = "*** END OF THE PROJECT GUTENBERG EBOOK LE AVVENTURE D'ALICE NEL PAESE DELLE MERAVIGLIE ***"
 
 # --- Find where the real book content begins and ends ---
@@ -675,7 +668,7 @@ Finnish lemmas were the most unique, having 8 translations in the top 20 that we
 
 Alice was counted as its own lemma only in Italian and French.
 
-The English translation has the sharpest drop-off in lemma usage, going from 'say' at 532, to 'go' at 179. Finnish has the smallest going from 'say' at 293 to 'so/like-that' \[nii\] at 182.
+The English translation has the sharpest drop-off in lemma usage, going from 'say' at 532, to 'go' at 179. Finnish has the smallest going from 'say' at 293 to 'so/like-that' \[niin\] at 182.
 
 # Section 3: Bellamy
 
