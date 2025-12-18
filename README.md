@@ -32,3 +32,4 @@ Dependencies or model names (en_core_web_sm, fr_core_news_sm, etc.):
     from nltk.corpus.reader.wordnet import NOUN, VERB, ADJ, ADV
   import itertools
   import numpy as np
+  import re
