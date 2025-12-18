@@ -1,6 +1,6 @@
 ,Language,Total Tokens,Unique Lemmas,Lexical Diversity (TTR),Sentences
 0,English,26683,1972,0.0739,1361
-1,Italian,23612,3726,0.1578,1707
+1,Italian,23557,3688,0.1566,1704
 2,Spanish,26213,2877,0.1098,1595
-3,French,26302,2593,0.0986,1756
+3,French,26259,2579,0.0982,1750
 4,Finnish,18705,4273,0.2284,1950
