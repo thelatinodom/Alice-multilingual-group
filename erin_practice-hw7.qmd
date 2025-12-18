@@ -154,6 +154,7 @@ plt.imshow(eng_wc, interpolation="bilinear")
 plt.axis("off")
 plt.title("Top 20 Lemmas – English Alice in Wonderland")
 plt.tight_layout()
+plt.savefig('figures/Top_Lemmas_English.png', dpi=740, bbox_inches='tight')
 plt.show()
 
 print("--")
@@ -203,6 +204,7 @@ plt.imshow(it_wc, interpolation="bilinear")
 plt.axis("off")
 plt.title("Top 20 Lemmas – Italian Alice in Wonderland")
 plt.tight_layout()
+plt.savefig('figures/Top_Lemmas_Italian.png', dpi=740, bbox_inches='tight')
 plt.show()
 
 print("--")
@@ -251,6 +253,7 @@ plt.imshow(spa_wc, interpolation="bilinear")
 plt.axis("off")
 plt.title("Top 20 Lemmas – Spanish Alice in Wonderland")
 plt.tight_layout()
+plt.savefig('figures/Top_Lemmas_Spanish.png', dpi=740, bbox_inches='tight')
 plt.show()
 
 print("--")
@@ -299,6 +302,7 @@ plt.imshow(fr_wc, interpolation="bilinear")
 plt.axis("off")
 plt.title("Top 20 Lemmas – French Alice in Wonderland")
 plt.tight_layout()
+plt.savefig('figures/Top_Lemmas_French.png', dpi=740, bbox_inches='tight')
 plt.show()
 
 print("--")
@@ -347,6 +351,7 @@ plt.imshow(fin_wc, interpolation="bilinear")
 plt.axis("off")
 plt.title("Top 20 Lemmas – Finnish Alice in Wonderland")
 plt.tight_layout()
+plt.savefig('figures/Top_Lemmas_Finnish.png', dpi=740, bbox_inches='tight')
 plt.show()
 
 print("----")
@@ -380,7 +385,9 @@ axes[4].set_xlabel("Frequency")
 
 fig.suptitle( "Top 20 Most Frequent Content Lemmas Across Languages – Alice in Wonderland", fontsize=18)
 
-fig.subplots_adjust(wspace=1.1, top=0.85)  
+fig.subplots_adjust(wspace=.75, top=0.85)  
+
+plt.savefig('figures/Content_Lemmas_Across_Languages.png', dpi=740, bbox_inches='tight')
 
 plt.show()
 
