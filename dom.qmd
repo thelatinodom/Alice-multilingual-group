@@ -535,3 +535,8 @@ print(df)
 #8e83384 (Doing these tasks: Manually remove headers and footers. Then, load and clean all language files and tokenize using the appropriate spaCy pipeline for each language.)
 ```
 
+```{python}
+
+=======
+>>>>>>> 31038bf1e05a5e4998158f47070512c63745ed02
+```

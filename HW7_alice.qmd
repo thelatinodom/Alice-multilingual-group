@@ -4,6 +4,10 @@ date: "2025-11-19"
 format: html
 ---
 
+# Section 1: Dom
+
+## Eng Gut Clean
+
 ```{python}
 SECTION 1: DOM LUTHJE 
 ---
@@ -12,22 +16,10 @@ date: "2025-11-19"
 format: html
 ---
 
-
-```{python}
-# Eng Gut clean
-```{python}
-
 import re
-
 import spacy
 
-# Load English spaCy model
-nlp_en = spacy.load("en_core_web_sm")
-
-
 #PART 0 - SETTING UP DOCUMENT
-#with open("data/alice_english.txt", "r", encoding="utf-8") as f:
-    #text = f.read()
     
 start = "data/alice_english.txt"
 end = "data/alice_english_clean.txt"
@@ -38,20 +30,6 @@ with open(start, "r", encoding="utf-8") as f:
 # --- Identify Gutenberg markers ---
 strtmkr = "*** START OF THE PROJECT GUTENBERG EBOOK ALICE'S ADVENTURES IN WONDERLAND ***"
 endmkr = "*** END OF THE PROJECT GUTENBERG EBOOK ALICE'S ADVENTURES IN WONDERLAND ***"
-
-# --- Find where the real book content begins and ends ---
-#strtid = text.find(strtmkr)
-#endid = text.find(endmkr)
-
-#if strtid != -1:
-    # Move to end of start marker line
-    #strtid = text.find("\n", strtid) + 1  
-
-#if endid != -1:
-    # End right before the end marker
-    #text_clean = text[strtid:endid].strip()
-#else:
-    #text_clean = text[strtid:].strip()
     
     
 strtid = text.find(strtmkr)
@@ -69,15 +47,7 @@ if endid == -1:
 
 text_clean = text[strtid:endid].strip()
 
-    
-    
-    
-    
-    
-    
-
 # --- Save the cleaned version ---
-
 
 with open(end, "w", encoding="utf-8") as f:
     f.write(text_clean)
@@ -88,344 +58,18 @@ print("----")
 with open("data/alice_english_clean.txt", "r", encoding="utf-8") as f:
     text_clean = f.read()
 
-#alice_eng_words = re.split(r"[\s\W]+", text_clean)
-#alice_eng_words = [w for w in alice_eng_words if w]
-#alice_eng_clean = [w.lower() for w in 
-#alice_eng_words]
-
 alice_eng_clean = [w.lower() for w in re.split(r"[\s\W]+", text_clean) if w]
 
-
-
 print(alice_eng_clean[:100])
-
 
 alice_eng_word_count = len(alice_eng_clean)
 print(alice_eng_word_count)
 
-
-
-# with open(end, "w", encoding="utf-8") as f:
-#     f.write(text_clean)
-# 
-# print("Cleaned file saved as:", output_file)
-# 
-# print("----")
-
-
-
 ```
 
-<<<<<<< HEAD
-Section 2: ERIN
-=======
-# Fin Gut clean
->>>>>>> 73bc1ae (Code into hw 7)
+## Fin Gut clean
 
 ```{python}
-import spacy
-from nltk.corpus import wordnet as wn
-import pandas as pd
-import matplotlib.pyplot as plt
-import nltk
-from collections import Counter
-import itertools
-from wordcloud import WordCloud
-import numpy as np
-
-#ENG
-with open("data/alice_english_clean.txt", "r", encoding="utf-8") as f:
-    text = f.read()
-    
-nlp = spacy.load("en_core_web_sm")    
-doc = nlp(text)    
-
-content_pos = {"NOUN", "VERB", "ADJ", "ADV"}
-
-eng_lemma_list = [
-    (token.lemma_.lower(), token.pos_)
-    for token in doc
-    if token.pos_ in content_pos and token.is_alpha
-]
-
-eng_lemmas = [lemma for lemma, pos in eng_lemma_list]
-eng_lemma_freq = Counter(eng_lemmas)
-
-print("The top 20 Lemmas for English are",eng_lemma_freq.most_common(20))
-
-eng_df = pd.DataFrame(
-    eng_lemma_freq.items(),
-    columns=["lemma", "frequency"]
-)
-
-eng_df = eng_df.sort_values(by="frequency", ascending=False)
-
-print(eng_df.head(20))
-
-eng_top20 = eng_df.head(20)
-
-eng_freq = dict(zip(eng_top20["lemma"], eng_top20["frequency"]))
-
-eng_wc = WordCloud(
-    width=800,
-    height=400,
-    background_color="white"
-).generate_from_frequencies(eng_freq)
-
-plt.figure()
-plt.imshow(eng_wc, interpolation="bilinear")
-plt.axis("off")
-plt.title("Top 20 Lemmas – English Alice in Wonderland")
-plt.tight_layout()
-plt.savefig('figures/Top_Lemmas_English.png', dpi=740, bbox_inches='tight')
-plt.show()
-
-print("--")
-
-
-#ITALIAN
-with open("data/alice_italian_clean.txt", "r", encoding="utf-8") as f:
-    text = f.read()
-    
-nlp = spacy.load("it_core_news_sm")    
-doc = nlp(text)    
-
-content_pos = {"NOUN", "VERB", "ADJ", "ADV"}
-
-it_lemma_list = [
-    (token.lemma_.lower(), token.pos_)
-    for token in doc
-    if token.pos_ in content_pos and token.is_alpha
-]
-
-it_lemmas = [lemma for lemma, pos in it_lemma_list]
-it_lemma_freq = Counter(it_lemmas)
-
-print("The top 20 Lemmas for Italian are", it_lemma_freq.most_common(20))
-
-it_df = pd.DataFrame(
-    it_lemma_freq.items(),
-    columns=["lemma", "frequency"]
-)
-
-it_df = it_df.sort_values(by="frequency", ascending=False)
-
-print(it_df.head(20))
-
-it_top20 = it_df.head(20)
-
-it_freq = dict(zip(it_top20["lemma"], it_top20["frequency"]))
-
-it_wc = WordCloud(
-    width=800,
-    height=400,
-    background_color="white"
-).generate_from_frequencies(it_freq)
-
-plt.figure()
-plt.imshow(it_wc, interpolation="bilinear")
-plt.axis("off")
-plt.title("Top 20 Lemmas – Italian Alice in Wonderland")
-plt.tight_layout()
-plt.savefig('figures/Top_Lemmas_Italian.png', dpi=740, bbox_inches='tight')
-plt.show()
-
-print("--")
-
-#SPANISH
-with open("data/alice_spanish_clean.txt", "r", encoding="utf-8") as f:
-    text = f.read()
-    
-nlp = spacy.load("es_core_news_sm")    
-doc = nlp(text)    
-
-content_pos = {"NOUN", "VERB", "ADJ", "ADV"}
-
-spa_lemma_list = [
-    (token.lemma_.lower(), token.pos_)
-    for token in doc
-    if token.pos_ in content_pos and token.is_alpha
-]
-
-spa_lemmas = [lemma for lemma, pos in spa_lemma_list]
-spa_lemma_freq = Counter(spa_lemmas)
-
-print("The top 20 Lemmas for Spanish are", spa_lemma_freq.most_common(20))
-
-spa_df = pd.DataFrame(
-    spa_lemma_freq.items(),
-    columns=["lemma", "frequency"]
-)
-
-spa_df = spa_df.sort_values(by="frequency", ascending=False)
-
-print(spa_df.head(20))
-
-spa_top20 = spa_df.head(20)
-
-spa_freq = dict(zip(spa_top20["lemma"], spa_top20["frequency"]))
-
-spa_wc = WordCloud(
-    width=800,
-    height=400,
-    background_color="white"
-).generate_from_frequencies(spa_freq)
-
-plt.figure()
-plt.imshow(spa_wc, interpolation="bilinear")
-plt.axis("off")
-plt.title("Top 20 Lemmas – Spanish Alice in Wonderland")
-plt.tight_layout()
-plt.savefig('figures/Top_Lemmas_Spanish.png', dpi=740, bbox_inches='tight')
-plt.show()
-
-print("--")
-
-#FRENCH
-with open("data/alice_french_clean.txt", "r", encoding="utf-8") as f:
-    text = f.read()
-
-nlp = spacy.load("fr_core_news_sm")    
-doc = nlp(text)    
-
-content_pos = {"NOUN", "VERB", "ADJ", "ADV"}
-
-fr_lemma_list = [
-    (token.lemma_.lower(), token.pos_)
-    for token in doc
-    if token.pos_ in content_pos and token.is_alpha
-]
-
-fr_lemmas = [lemma for lemma, pos in fr_lemma_list]
-fr_lemma_freq = Counter(fr_lemmas)
-
-print("The top 20 Lemmas for French are", fr_lemma_freq.most_common(20))
-
-fr_df = pd.DataFrame(
-    fr_lemma_freq.items(),
-    columns=["lemma", "frequency"]
-)
-
-fr_df = fr_df.sort_values(by="frequency", ascending=False)
-
-print(fr_df.head(20))
-
-fr_top20 = fr_df.head(20)
-
-fr_freq = dict(zip(fr_top20["lemma"], fr_top20["frequency"]))
-
-fr_wc = WordCloud(
-    width=800,
-    height=400,
-    background_color="white"
-).generate_from_frequencies(fr_freq)
-
-plt.figure()
-plt.imshow(fr_wc, interpolation="bilinear")
-plt.axis("off")
-plt.title("Top 20 Lemmas – French Alice in Wonderland")
-plt.tight_layout()
-plt.savefig('figures/Top_Lemmas_French.png', dpi=740, bbox_inches='tight')
-plt.show()
-
-print("--")
-
-#FINNISH
-with open("data/alice_finnish_clean.txt", "r", encoding="utf-8") as f:
-    text = f.read()
-    
-nlp = spacy.load("fi_core_news_sm")    
-doc = nlp(text)    
-
-content_pos = {"NOUN", "VERB", "ADJ", "ADV"}
-
-fin_lemma_list = [
-    (token.lemma_.lower(), token.pos_)
-    for token in doc
-    if token.pos_ in content_pos and token.is_alpha
-]
-
-fin_lemmas = [lemma for lemma, pos in fin_lemma_list]
-fin_lemma_freq = Counter(fin_lemmas)
-
-print("The top 20 Lemmas for Finnish are", fin_lemma_freq.most_common(20))
-
-fin_df = pd.DataFrame(
-    fin_lemma_freq.items(),
-    columns=["lemma", "frequency"]
-)
-
-fin_df = fin_df.sort_values(by="frequency", ascending=False)
-
-print(fin_df.head(20))
-
-fin_top20 = fin_df.head(20)
-
-fin_freq = dict(zip(fin_top20["lemma"], fin_top20["frequency"]))
-
-fin_wc = WordCloud(
-    width=800,
-    height=400,
-    background_color="white"
-).generate_from_frequencies(fin_freq)
-
-plt.figure()
-plt.imshow(fin_wc, interpolation="bilinear")
-plt.axis("off")
-plt.title("Top 20 Lemmas – Finnish Alice in Wonderland")
-plt.tight_layout()
-plt.savefig('figures/Top_Lemmas_Finnish.png', dpi=740, bbox_inches='tight')
-plt.show()
-
-print("----")
-
-fig, axes = plt.subplots(1, 5, figsize=(40, 10))  
-
-# English
-axes[0].barh(eng_top20["lemma"][::-1], eng_top20["frequency"][::-1], color='blue')
-axes[0].set_title("English")
-axes[0].set_xlabel("Frequency")
-
-# Italian
-axes[1].barh(it_top20["lemma"][::-1], it_top20["frequency"][::-1], color='green')
-axes[1].set_title("Italian")
-axes[1].set_xlabel("Frequency")
-
-# Spanish
-axes[2].barh(spa_top20["lemma"][::-1], spa_top20["frequency"][::-1], color='red')
-axes[2].set_title("Spanish")
-axes[2].set_xlabel("Frequency")
-
-# French
-axes[3].barh(fr_top20["lemma"][::-1], fr_top20["frequency"][::-1], color='purple')
-axes[3].set_title("French")
-axes[3].set_xlabel("Frequency")
-
-# Finnish
-axes[4].barh(fin_top20["lemma"][::-1], fin_top20["frequency"][::-1], color='orange')
-axes[4].set_title("Finnish")
-axes[4].set_xlabel("Frequency")
-
-fig.suptitle( "Top 20 Most Frequent Content Lemmas Across Languages – Alice in Wonderland", fontsize=18)
-
-fig.subplots_adjust(wspace=.75, top=0.85)  
-
-plt.savefig('figures/Content_Lemmas_Across_Languages.png', dpi=740, bbox_inches='tight')
-
-plt.show()
-
-
-# Tokenize and lowercase words
-alice_fi_clean = [w.lower() for w in re.split(r"[\s\W]+", text_clean) if w]
-
-# Print first 100 words
-print(alice_fi_clean[:100])
-
-# Count total words
-alice_fi_word_count = len(alice_fi_clean)
-print(alice_fi_word_count)
-
-
 
 #PART 0 - SETTING UP DOCUMENT
 with open("data/alice_finnish.txt", "r", encoding="utf-8") as f:
@@ -478,8 +122,8 @@ print(alice_fi_word_count)
 
 ```
 
+## Fre Gut clean
 
-# Fre Gut clean
 ```{python}
 #PART 0 - SETTING UP DOCUMENT
 with open("data/alice_french.txt", "r", encoding="utf-8") as f:
@@ -531,8 +175,7 @@ print(alice_fr_word_count)
 
 ```
 
-
-# Ita Gut clean
+## Ita Gut clean
 
 ```{python}
 
@@ -584,12 +227,9 @@ print(alice_it_clean[:100])
 alice_it_word_count = len(alice_it_clean)
 print(alice_it_word_count)
 
-
-
 ```
 
-# Spa Gut clean
-
+## Spa Gut clean
 
 ```{python}
 import re
@@ -614,15 +254,9 @@ words = [w.lower() for w in re.split(r"[\s\W]+", text_clean) if w]
 print("First 100 words:", words[:100])
 print("Total word count:", len(words))
 
-
 ```
 
-
-
-
-# splitting
-
-
+## splitting
 
 ```{python}
 import re
@@ -654,9 +288,7 @@ print("Finnish word count:", len(alice_finnish))
 
 ```
 
-
-
-
+## Spacy Corpus Table
 
 ```{python}
 import spacy
@@ -737,9 +369,7 @@ print(df)
 
 ```
 
-```
-
-Section 2: ERIN
+# Section 2: ERIN
 
 ```{python}
 import spacy
@@ -1032,5 +662,27 @@ fig.subplots_adjust(wspace=.75, top=0.85)
 plt.savefig('figures/Content_Lemmas_Across_Languages.png', dpi=740, bbox_inches='tight')
 
 plt.show()
+
+```
+
+The only lemmas, that seem to directly translate to each other, that are present in the top 20 across all language translations in the study were 'say', which was ranked 1st, for most used, and 'see'. 'know', 'do/make', 'have', 'time', 'head' appear across four of the five language translations.
+
+Within the Romance Language translations, all three had seven of the same lemmas present in the top 20: 'no/not', 'say', 'make/do', 'have', 'see', 'more/most' and 'know'; with 'no/not' and 'more/most' lemmas only being found in the Romance Languages' top lemmas as a subcategory.
+
+Finnish lemmas were the most unique, having 8 translations in the top 20 that were not present in the top 20 of other translations: 'quite/totally' \[aivan\], 'only/just' \[vain\], 'king' \[kuningas\], 'ask/inquire' \[kysyae\], 'hear' \[kuulla\], 'root/origin' \[juuri\], 'hatter' \[hatuntekijae\], 'how/why' \[kuinka\]. All other translations had 3-5 unique lemmas in their top 20.
+
+Alice was counted as its own lemma only in Italian and French.
+
+The English translation has the sharpest drop-off in lemma usage, going from 'say' at 532, to 'go' at 179. Finnish has the smallest going from 'say' at 293 to 'so/like-that' \[nii\] at 182.
+
+# Section 3: Bellamy
+
+```{python}
+
+```
+
+# Section 4: Dylan
+
+```{python}
 
 ```
