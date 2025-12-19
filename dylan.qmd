@@ -85,15 +85,28 @@ for token in it_doc:
 
 print("-----")
 
-dire = it_nlp("dire")[0]._.wordnet.synsets()[0]
-comparison1 = it_nlp("pensare")[0]._.wordnet.synsets()[0]
+dire_synsets = it_nlp("dire")[0]._.wordnet.synsets()
+comparison1_synsets = it_nlp("pensare")[0]._.wordnet.synsets()
 
-print("The Wu-Palmer similarity between 'dire' and 'pensare' is:",  dire.wup_similarity(comparison1))
+if dire_synsets and comparison1_synsets:
+    dire = dire_synsets[0]
+    comparison1 = comparison1_synsets[0]
+    print("The Wu-Palmer similarity between 'dire' and 'pensare' is:", dire.wup_similarity(comparison1))
+else:
+    print("No WordNet synsets found for 'dire' or 'pensare'")
 
-re = it_nlp("re")[0]._.wordnet.synsets()[0]
-comparison2 = it_nlp("bruco")[0]._.wordnet.synsets()[0]
 
-print("The Wu-Palmer similarity between 're' and 'bruco' is:",  re.wup_similarity(comparison2))
+print("--")
+
+re_synsets = it_nlp("re")[0]._.wordnet.synsets()
+comparison2_synsets = it_nlp("bruco")[0]._.wordnet.synsets()
+
+if re_synsets and comparison2_synsets:
+    re = re_synsets[0]
+    comparison2 = comparison2_synsets[0]
+    print("The Wu-Palmer similarity between 're' and 'bruco' is:", re.wup_similarity(comparison2))
+else:
+    print("No WordNet synsets found for 're' and 'bruco'")    
 ```
 
 ```{python}
@@ -134,15 +147,28 @@ for token in es_doc:
 
 print("-----")
 
-decir = es_nlp("decir")[0]._.wordnet.synsets()[0]
-comparison1 = es_nlp("pensar")[0]._.wordnet.synsets()[0]
+decir_synsets = es_nlp("decir")[0]._.wordnet.synsets()
+comparison1_synsets = es_nlp("pensar")[0]._.wordnet.synsets()
 
-print("The Wu-Palmer similarity between 'decir' and 'pensar' is:",  decir.wup_similarity(comparison1))
+if decir_synsets and comparison1_synsets:
+    decir = decir_synsets[0]
+    comparison1 = comparison1_synsets[0]
+    print("The Wu-Palmer similarity between 'decir' and 'pensar' is:",  decir.wup_similarity(comparison1))
+else: 
+  print("No WordNet synsets found for 'decir' and 'pensar'")  
+  
+print("--")
 
-rey = es_nlp("rey")[0]._.wordnet.synsets()[0]
-comparison2 = es_nlp("oruga")[0]._.wordnet.synsets()[0]
+rey_synsets = es_nlp("rey")[0]._.wordnet.synsets()
+comparison2_synsets = es_nlp("oruga")[0]._.wordnet.synsets()
 
-print("The Wu-Palmer similarity between 'rey' and 'oruga' is:",  rey.wup_similarity(comparison2))
+if rey_synsets and comparison2_synsets:
+    rey = rey_synsets[0]
+    comparison2 = comparison2_synsets[0]
+    print("The Wu-Palmer similarity between 'rey' and 'oruga' is:",  rey.wup_similarity(comparison2))
+else: 
+  print("No WordNet synsets found for 'rey' and 'oruga'")  
+
 ```
 
 ```{python}
@@ -183,15 +209,28 @@ for token in fr_doc:
 
 print("-----")
 
-dire = fr_nlp("dire")[0]._.wordnet.synsets()[0]
-comparison1 = fr_nlp("penser")[0]._.wordnet.synsets()[0]
+dire_synsets = fr_nlp("dire")[0]._.wordnet.synsets()
+comparison1_synsets = fr_nlp("penser")[0]._.wordnet.synsets()
 
-print("The Wu-Palmer similarity between 'dire' and 'penser' is:",  dire.wup_similarity(comparison1))
+if dire_synsets and comparison1_synsets:
+    dire = dire_synsets[0]
+    comparison1 = comparison1_synsets[0]
+    print("The Wu-Palmer similarity between 'dire' and 'penser' is:",  dire.wup_similarity(comparison1))
+else: 
+  print("No WordNet synsets found for 'decir' and 'pensar'")  
+  
+print("--")
 
-roi = fr_nlp("roi")[0]._.wordnet.synsets()[0]
-comparison2 = fr_nlp("chenille")[0]._.wordnet.synsets()[0]
+roi_synsets = fr_nlp("roi")[0]._.wordnet.synsets()
+comparison2_synsets = fr_nlp("chenille")[0]._.wordnet.synsets()
 
-print("The Wu-Palmer similarity between 'roi' and 'chenille' is:",  roi.wup_similarity(comparison2))
+if dire_synsets and comparison2_synsets:
+    roi = roi_synsets[0]
+    comparison2 = comparison2_synsets[0]
+    print("The Wu-Palmer similarity between 'roi' and 'chenille' is:",  roi.wup_similarity(comparison2))
+else: 
+  print("No WordNet synsets found for 'roi' and 'chenille'")  
+
 ```
 
 ```{python}
