@@ -4,24 +4,266 @@ format: html
 ---
 
 ```{python}
-#ENG
-with open("data/alice_english_clean.txt", "r", encoding="utf-8") as f:
-    text = f.read()
-    
-nlp = spacy.load("en_core_web_sm")    
-doc = nlp(text)    
 
-content_pos = {"VERB", "ADJ"}
-
-eng_lemma_list = [
-    (token.lemma_.lower(), token.pos_)
-    for token in doc
-    if token.pos_ in content_pos and token.is_alpha
-]
-
-eng_lemmas = [lemma for lemma, pos in eng_lemma_list]
 ```
 
 this is the section for the english, similar set up for other lang variable names in their sections.
 
 don't forget to import all things may need
+
+Tasks:
+
+-   Choose **10 shared lemmas** (5 nouns, 5 verbs).
+
+-   For each language, retrieve WordNet synsets, glosses, and hypernyms.
+
+-   For **one** pair of nouns and **one** pair of verbs, compute similarity scores (e.g., Wu–Palmer) within each language.
+
+-   Visualize semantic similarity within two scatter plots (one for nouns, one for verbs), which will show how similar or distinct the chosen word pairs are within and across languages.
+
+Note: if WordNet coverage is limited for one of your chosen languages, describe what you attempted and how you adapted (e.g., using English synsets for comparison).
+
+```{python}
+import spacy
+from nltk.corpus import wordnet as wn
+import pandas as pd
+import matplotlib.pyplot as plt
+import nltk
+from collections import Counter
+import itertools
+
+
+#CHOOSE 10 SHARED LEMMAS (5 NOUNS, 5 VERBS)
+#ENG
+with open("data/alice_english_clean.txt", "r", encoding="utf-8") as f:
+    text = f.read()
+
+nlp_eng = spacy.load("en_core_web_sm")    
+doc = nlp_eng(text)    
+
+content_pos = {"NOUN", "VERB"}
+
+lemma_list_eng = [
+    (token.lemma_.lower(), token.pos_)
+    for token in doc
+    if token.pos_ in content_pos and token.is_alpha
+]
+
+lemma_freq_eng = Counter(lemma for lemma, pos in lemma_list_eng)
+print(lemma_freq_eng.most_common(50))
+
+print("----")
+
+df_eng = pd.DataFrame([
+    {"lemma": lemma, "POS": pos, "frequency": lemma_freq_eng[lemma]}
+    for lemma, pos in lemma_list_eng
+]).drop_duplicates()
+
+df_eng = df_eng.sort_values(by="frequency", ascending=False)
+
+print(df_eng.head(50))
+
+
+print("-----------")
+#ITALIAN
+with open("data/alice_italian_clean.txt", "r", encoding="utf-8") as f:
+    text = f.read()
+
+nlp_it = spacy.load("it_core_news_sm")    
+doc = nlp_it(text)    
+
+content_pos = {"NOUN", "VERB"}
+
+lemma_list_it = [
+    (token.lemma_.lower(), token.pos_)
+    for token in doc
+    if token.pos_ in content_pos and token.is_alpha
+]
+
+lemma_freq_it = Counter(lemma for lemma, pos in lemma_list_it)
+print(lemma_freq_it.most_common(50))
+
+print("----")
+
+df_it = pd.DataFrame([
+    {"lemma": lemma, "POS": pos, "frequency": lemma_freq_it[lemma]}
+    for lemma, pos in lemma_list_it
+]).drop_duplicates()
+
+df_it = df_it.sort_values(by="frequency", ascending=False)
+
+print(df_it.head(50))
+print("-----------")
+#Spanish
+with open("data/alice_spanish_clean.txt", "r", encoding="utf-8") as f:
+    text = f.read()
+
+nlp_spa = spacy.load("es_core_news_sm")    
+doc = nlp_spa(text)    
+
+content_pos = {"NOUN", "VERB"}
+
+lemma_list_spa = [
+    (token.lemma_.lower(), token.pos_)
+    for token in doc
+    if token.pos_ in content_pos and token.is_alpha
+]
+
+lemma_freq_spa = Counter(lemma for lemma, pos in lemma_list_spa)
+print(lemma_freq_spa.most_common(50))
+
+print("----")
+
+df_spa = pd.DataFrame([
+    {"lemma": lemma, "POS": pos, "frequency": lemma_freq_spa[lemma]}
+    for lemma, pos in lemma_list_spa
+]).drop_duplicates()
+
+df_spa = df_spa.sort_values(by="frequency", ascending=False)
+
+print(df_spa.head(50))
+print("-----------")
+#French
+with open("data/alice_french_clean.txt", "r", encoding="utf-8") as f:
+    text = f.read()
+
+nlp_fr = spacy.load("fr_core_news_sm")    
+doc = nlp_fr(text)    
+
+content_pos = {"NOUN", "VERB"}
+
+lemma_list_fr = [
+    (token.lemma_.lower(), token.pos_)
+    for token in doc
+    if token.pos_ in content_pos and token.is_alpha
+]
+
+lemma_freq_fr = Counter(lemma for lemma, pos in lemma_list_fr)
+print(lemma_freq_fr.most_common(50))
+
+print("----")
+
+df_fr = pd.DataFrame([
+    {"lemma": lemma, "POS": pos, "frequency": lemma_freq_fr[lemma]}
+    for lemma, pos in lemma_list_fr
+]).drop_duplicates()
+
+df_fr = df_fr.sort_values(by="frequency", ascending=False)
+
+print(df_fr.head(50))
+
+print("-----------")
+#Finnish
+with open("data/alice_finnish_clean.txt", "r", encoding="utf-8") as f:
+    text = f.read()
+
+nlp_fin = spacy.load("fi_core_news_sm")    
+doc = nlp_fin(text)    
+
+content_pos = {"NOUN", "VERB"}
+
+lemma_list_fin = [
+    (token.lemma_.lower(), token.pos_)
+    for token in doc
+    if token.pos_ in content_pos and token.is_alpha
+]
+
+lemma_freq_fin = Counter(lemma for lemma, pos in lemma_list_fin)
+print(lemma_freq_fin.most_common(50))
+
+print("----")
+
+df_fin = pd.DataFrame([
+    {"lemma": lemma, "POS": pos, "frequency": lemma_freq_fin[lemma]}
+    for lemma, pos in lemma_list_fin
+]).drop_duplicates()
+
+df_fin = df_fin.sort_values(by="frequency", ascending=False)
+
+print(df_fin.head(50))
+
+#VERBS: say, see, know, have, go (dire, vedere, sapere,  avere, andare) () () ()
+
+#NOUNS: thing, time, head, hand, voice (cosa, volta, capo, mano, voce) () () ()
+
+#WORDNET SYNSETS, GLOSSES, HYPERNYMS
+
+  #pulled from hw 6 Erin
+
+
+```
+
+```{python}
+top5lem = df.drop_duplicates(subset="lemma").head(5)["lemma"].tolist()
+print("Top 5 unique lemmas:", top5lem)
+for lemma in top5lem:
+    print(f"Lemma: {lemma}")
+
+    synst = wn.synsets(lemma)
+    for syn in synst:
+        print(f"\nSynset: {syn.name()}")
+        print(f"  Definition: {syn.definition()}")
+
+        exmpl = syn.examples()
+        if exmpl:
+            print("  Examples:")
+            for ex in exmpl:
+                print(f"     - {ex}")
+        else:
+            print("  Examples: None")
+
+        hyper = syn.hypernyms()
+        if hyper:
+            print("  Hypernyms:")
+            for h in hyper:
+                print(f"     - {h.name()}")
+        else:
+            print("  Hypernyms: None")
+
+        hypo = syn.hyponyms()
+        if hypo:
+            print("  Hyponyms:")
+            for hy in hypo[:10]:  
+                print(f"     - {hy.name()}")
+        else:
+            print("  Hyponyms: None")
+            
+
+
+#WuP SIMILARITY SCORE
+
+#pulled from erin hw6
+#PART 3 - SEMANTIC SIMILARITY
+
+top10unq = df.drop_duplicates(subset="lemma").head(10)["lemma"].tolist()
+print("Top 10 unique lemmas:", top10unq)
+
+pairs = [(top10unq[i], top10unq[i+1]) for i in range(0, 10, 2)]
+
+comments = [
+    "I find it interesting that the pair selected here of say(n) and sol(n) are what they are. I dont feel confident I coud even give a definition for sol.",
+    "This pair again decided to compare the noun forms. I feel better about undestanding the fomrs themselves, but still think it is an odd choice.",
+    "This pair is tied with the next for least similar. This is likely due at least partially to the fact that they are having to use less common form of the synsets to get the POS to match for each word, so that they can even be compaired.",
+    "This pair is tied with the previous for least similar. This is likely due at least partially to the fact that they are having to use less common form of the synsets to get the POS to match for each word, so that they can even be compaired.",
+    "This pair is listed as being the most similar. Once again, I dont feel confident in one of the forms chosen, specifically the bash form listed for do."
+]
+
+for idx, (w1, w2) in enumerate(pairs):
+    syn1 = wn.synsets(w1)
+    syn2 = wn.synsets(w2)
+
+    print("-")
+    print(f"Pair: ({w1}, {w2})")
+
+    if syn1 and syn2:
+        sim = syn1[0].wup_similarity(syn2[0])
+        print(f"  {syn1[0].name()} vs {syn2[0].name()}")
+        print(f"  Wu-Palmer similarity (first sense): {sim:.2f}")
+    else:
+        print("  One or both words have no synsets.")
+
+    print(f"  Comment: {comments[idx]}")
+
+
+#VISUALIZE
+```
