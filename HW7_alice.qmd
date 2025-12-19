@@ -673,8 +673,310 @@ The English translation has the sharpest drop-off in lemma usage, going from 'sa
 # Section 3: Bellamy
 
 ```{python}
+#VERBS
+import spacy
+import pandas as pd
+from collections import Counter
 
+nlp_models = {
+    'English': 'en_core_web_sm',
+    'French': 'fr_core_news_sm',
+    'Spanish': 'es_core_news_sm',
+    'Italian': 'it_core_news_sm',
+    'Finnish': 'fi_core_news_sm'
+}
+
+files = {
+    "English": "data/alice_english_clean.txt",
+    "Italian": "data/alice_italian_clean.txt",
+    "Spanish": "data/alice_spanish_clean.txt",
+    "French":  "data/alice_french_clean.txt",
+    "Finnish": "data/alice_finnish_clean.txt"
+}
+
+name_alts = {
+    'English': ['Alice', 'alice'],
+    'French': ['Alice', 'alice'],
+    'Spanish': ['Alicia', 'alicia'],
+    'Italian': ['Alice', 'alice'],
+    'Finnish': ['Liisa', 'liisa']
+}
+
+def extract_alice_verbs(text, nlp, language):
+    """
+    Extract verbs where Alice is the subject or object.
+    
+    Arguments:
+        text: The text to analyze
+        nlp: The spaCy language model
+        language: The language being analyzed (for Alice name variations)
+    
+    Returns:
+        List of verb lemmas
+    """
+    doc = nlp(text)
+    alice_verbs = []
+    alice_names = name_alts[language]
+    
+    for token in doc:
+        # Check if token is Alice
+        if token.text in alice_names:
+            # Check if Alice is the subject (nsubj) of a verb
+            if token.dep_ == 'nsubj' and token.head.pos_ == 'VERB':
+                alice_verbs.append(token.head.lemma_.lower())
+            
+            # Check if Alice is the object (dobj) of a verb
+            elif token.dep_ == 'dobj' and token.head.pos_ == 'VERB':
+                alice_verbs.append(token.head.lemma_.lower())
+        
+        # Also check if any token has Alice as its subject or object
+        for child in token.children:
+            if child.text in alice_names:
+                if child.dep_ == 'nsubj' and token.pos_ == 'VERB':
+                    alice_verbs.append(token.lemma_.lower())
+                elif child.dep_ == 'dobj' and token.pos_ == 'VERB':
+                    alice_verbs.append(token.lemma_.lower())
+    
+    return alice_verbs
+
+def analyze_language(language, file_path, model_name):
+    """
+    Analyze a single language version of Alice in Wonderland.
+    
+    Arguments:
+        language: Name of the language
+        file_path: Path to the text file
+        model_name: Name of the spaCy model to use
+    
+    Returns:
+        Counter object with verb frequencies
+    """
+    nlp = spacy.load(model_name)
+
+    with open(file_path, 'r', encoding='utf-8') as f:
+        text = f.read()
+
+    verbs = extract_alice_verbs(text, nlp, language)
+    
+    return Counter(verbs)
+
+def create_summary_table(all_results):
+    """
+    Create a summary table with top 5 verbs for each language.
+    
+    Arguments:
+        all_results: Dictionary mapping language names to Counter objects
+    
+    Returns:
+        pandas DataFrame with results
+    """
+    summary_data = []
+    
+    for language, verb_counts in all_results.items():
+        top_5 = verb_counts.most_common(5)
+        for rank, (verb, count) in enumerate(top_5, 1):
+            summary_data.append({
+                'Language': language.capitalize(),
+                'Rank': rank,
+                'Verb': verb,
+                'Frequency': count
+            })
+    
+    df = pd.DataFrame(summary_data)
+    return df
+
+def main():
+    """Main function to process all languages."""
+    all_results = {}
+    
+    # processes each language
+    for language, model_name in nlp_models.items():
+        try:
+            file_path = files[language]
+            verb_counts = analyze_language(language, file_path, model_name)
+            all_results[language] = verb_counts
+            
+            print(f"\n{language.capitalize()} - Top 10 verbs:")
+            for verb, count in verb_counts.most_common(10):
+                print(f"  {verb}: {count}")
+            print()
+        
+        #TO KEEP EVERYTHING FROM CRASHING       
+        except Exception as e:
+            print(f"Error processing {language}: {e}")
+            continue
+    
+    # creates summary table
+    summary_df = create_summary_table(all_results)
+    print(summary_df.to_string(index=False))
+    
+    # save to CSV
+    summary_df.to_csv('alice_verbs_summary.csv', index=False)
+    
+    return all_results, summary_df
+
+# run the analysis
+if __name__ == "__main__":
+    results, summary = main()
+    
+#ADJECTIVES
+import spacy
+import pandas as pd
+from collections import Counter
+
+nlp_models = {
+    'English': 'en_core_web_sm',
+    'French': 'fr_core_news_sm',
+    'Spanish': 'es_core_news_sm',
+    'Italian': 'it_core_news_sm',
+    'Finnish': 'fi_core_news_sm'
+}
+
+files = {
+    "English": "data/alice_english_clean.txt",
+    "Italian": "data/alice_italian_clean.txt",
+    "Spanish": "data/alice_spanish_clean.txt",
+    "French":  "data/alice_french_clean.txt",
+    "Finnish": "data/alice_finnish_clean.txt"
+}
+
+name_alts = {
+    'English': ['Alice', 'alice'],
+    'French': ['Alice', 'alice'],
+    'Spanish': ['Alicia', 'alicia'],
+    'Italian': ['Alice', 'alice'],
+    'Finnish': ['Liisa', 'liisa']
+}
+
+def extract_alice_adjectives(text, nlp, language):
+    """
+    Extract adjectives that modify Alice.
+    
+    Arguments:
+        text: The text to analyze
+        nlp: The spaCy language model
+        language: The language being analyzed (for Alice name variations)
+    
+    Returns:
+        List of adjective lemmas
+    """
+    doc = nlp(text)
+    alice_adjectives = []
+    alice_names = name_alts[language]
+    
+    for token in doc:
+        # Check if token is Alice
+        if token.text in alice_names:
+            # Look for adjectives that modify Alice
+            # Common patterns: amod (adjectival modifier), acomp (adjectival complement)
+            for child in token.children:
+                if child.pos_ == 'ADJ' and child.is_alpha:
+                    alice_adjectives.append(child.lemma_.lower())
+            
+            # Also check if Alice is modifying something (less common but possible)
+            if token.head.pos_ == 'ADJ' and token.head.is_alpha:
+                # Check the dependency relation
+                if token.dep_ in ['nsubj', 'attr', 'nmod']:
+                    alice_adjectives.append(token.head.lemma_.lower())
+        
+        # Check if token is an adjective modifying Alice
+        if token.pos_ == 'ADJ' and token.is_alpha:
+            for child in token.children:
+                if child.text in alice_names:
+                    alice_adjectives.append(token.lemma_.lower())
+    
+    return alice_adjectives
+
+def analyze_language(language, file_path, model_name):
+    """
+    Analyze a single language version of Alice in Wonderland.
+    
+    Arguments:
+        language: Name of the language
+        file_path: Path to the text file
+        model_name: Name of the spaCy model to use
+    
+    Returns:
+        Counter object with adjective frequencies
+    """
+    nlp = spacy.load(model_name)
+
+    with open(file_path, 'r', encoding='utf-8') as f:
+        text = f.read()
+    
+    adjectives = extract_alice_adjectives(text, nlp, language)
+    
+    return Counter(adjectives)
+
+def create_summary_table(all_results):
+    """
+    Create a summary table with top 5 adjectives for each language.
+    
+    Arguments:
+        all_results: Dictionary mapping language names to Counter objects
+    
+    Returns:
+        pandas DataFrame with results
+    """
+    summary_data = []
+    
+    for language, adj_counts in all_results.items():
+        top_5 = adj_counts.most_common(5)
+        for rank, (adjective, count) in enumerate(top_5, 1):
+            summary_data.append({
+                'Language': language.capitalize(),
+                'Rank': rank,
+                'Adjective': adjective,
+                'Frequency': count
+            })
+    
+    df = pd.DataFrame(summary_data)
+    return df
+
+def main():
+    """Main function to process all languages."""
+    all_results = {}
+    
+    # processes each language
+    for language, model_name in nlp_models.items():
+        try:
+            file_path = files[language]
+            adj_counts = analyze_language(language, file_path, model_name)
+            all_results[language] = adj_counts
+            
+            print(f"\n{language.capitalize()} - Top 10 adj")
+            for adjective, count in adj_counts.most_common(10):
+                print(f"  {adjective}: {count}")
+            print()
+        
+        #TO KEEP EVERYTHING FROM CRASHING       
+        except Exception as e:
+            print(f"Error processing {language}: {e}")
+            continue
+    
+    # creates the summary table
+    summary_df = create_summary_table(all_results)
+    print(summary_df.to_string(index=False))
+    
+    # save to CSV
+    summary_df.to_csv('alice_adjectives_summary.csv', index=False)
+    
+    return all_results, summary_df
+
+# run the analysis
+if __name__ == "__main__":
+    results, summary = main()
 ```
+
+English: The top verbs feel very true to the story. Alice is always "saying", "thinking", "replying", "beginning", or "looking" or those actions are being directed at her. The top adjectives also make sense and reveal the confusing and often uncomfortable scenarios Alice finds herself in.
+
+French: The top verbs in French are similar to those in English. "Dire" is equivalent to "to say", "trouver" is "to find" and may also connote having an opinion/experience of something and so can relate to "thinking", "commencer" is "to begin", "sentir" is "to feel", and "savoir" is "to know". The adjectives also match the English, with the top five translating to "alone", "noticed" or "remarkable" (and in the sense of the story could be "peculiar"), "little", "indignant", and "hauty/proud". It is interesting that the French version seems to drop Alice's hunger, or at least focuses less on it, and instead focuses on how precocious she is.
+
+Spanish: The Spanish verbs also follow the pattern of "thinking", "saying", "asking", "looking", and "beginning". The adjectives additionally have high counts of "poor" and "little" but also include "scared", which may be a way of communicating Alice's discomfort with her situation. However, there's also a high count of "interested", which reflects Alice's engagement with all that is "new" around her.
+
+Italian: The Italian verbs keep up with "saying", "responding/answering", "thinking", and "asking", and also includes "soggiunse" meaning "to add" (to a conversation). The Italian adjectives maintain the pattern of "poor" Alice, and continues Spanish's interest in all that is "new" and Alice being "amazed" at what she sees. It adds the new adjective of "all", which is interesting as it stands in opposition to English and French's emphasis on "alone", and might apply to the groups which Alice observes.
+
+Finnish: Finnish rounds out the collection of verbs with "saying", "answering", "asking", and "exclaiming", but also adds "believing" to the mix, giving the first instance of Alice's deeper questioning of the world she finds herself in and the new social norms she has to naviagte. As for adjectives, "white" leads the list, followed by "ready", "scared", "cheerful", and once again "little". It seems that Finnish focuses more on Alice's mood than her physical state, but it is also the first language to have a repeat of English's "ready", perhaps leaning into Alice's self-questioning within the story.
 
 # Section 4: Dylan
 
