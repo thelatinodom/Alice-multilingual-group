@@ -1,0 +1,244 @@
+```{python}
+import spacy
+from nltk.corpus import wordnet as wn
+from nltk.corpus.reader.wordnet import NOUN, VERB, ADJ, ADV
+from spacy_wordnet.wordnet_annotator import WordnetAnnotator
+
+def get_wordnet_pos(spacy_pos):
+    if spacy_pos.startswith("N"):
+        return NOUN
+    elif spacy_pos.startswith("V"):
+        return VERB
+    elif spacy_pos.startswith("J"):
+        return ADJ
+    elif spacy_pos.startswith("R"):
+        return ADV
+    return None
+
+# ENGLISH
+
+en_nlp = spacy.load("en_core_web_sm")
+en_nlp.add_pipe("spacy_wordnet", after='tagger')
+
+en_lemmas = ["", "say", "go", "think", "know", "see", "time", "head", "queen", "king", "caterpillar"]
+en_text = " ".join(en_lemmas)
+en_doc = en_nlp(en_text)
+
+for token in en_doc:
+    wn_pos = get_wordnet_pos(token.tag_)
+    lemma = token.lemma_.lower()
+    if wn_pos:
+        synsets = wn.synsets(lemma, pos=wn_pos)
+        print(f"\n{token.text.upper()} ({token.pos_})")
+        for s in synsets[:3]:
+            hypernym_names = [h.name() for h in s.hypernyms()]
+            print(f"  - {s.definition()} ... Hypernyms: {hypernym_names}")
+
+print("-----")
+
+say = en_nlp("say")[0]._.wordnet.synsets()[0]
+comparison1 = en_nlp("think")[0]._.wordnet.synsets()[0]
+
+print("The Wu-Palmer similarity between 'say' and 'think' is:",  say.wup_similarity(comparison1))
+
+king = en_nlp("king")[0]._.wordnet.synsets()[0]
+comparison2 = en_nlp("caterpillar")[0]._.wordnet.synsets()[0]
+
+print("The Wu-Palmer similarity between 'king' and 'caterpillar' is:",  king.wup_similarity(comparison2))
+```
+
+```{python}
+import spacy
+from nltk.corpus import wordnet as wn
+from nltk.corpus.reader.wordnet import NOUN, VERB, ADJ, ADV
+from spacy_wordnet.wordnet_annotator import WordnetAnnotator
+
+def get_wordnet_pos(spacy_pos):
+    if spacy_pos.startswith("N"):
+        return NOUN
+    elif spacy_pos.startswith("V"):
+        return VERB
+    elif spacy_pos.startswith("J"):
+        return ADJ
+    elif spacy_pos.startswith("R"):
+        return ADV
+    return None
+
+# ITALIAN
+
+it_nlp = spacy.load("it_core_news_sm")
+it_nlp.add_pipe("spacy_wordnet", after='tagger')
+
+it_lemmas = ["", "dire", "andare", "pensare", "sapere", "vedere", "tempo", "testa", "regina", "re", "bruco"]
+it_text = " ".join(it_lemmas)
+it_doc = it_nlp(it_text)
+
+for token in it_doc:
+    wn_pos = get_wordnet_pos(token.tag_)
+    lemma = token.lemma_.lower()
+    if wn_pos:
+        synsets = wn.synsets(lemma, pos=wn_pos, lang='ita')
+        print(f"\n{token.text.upper()} ({token.pos_})")
+        for s in synsets[:3]:
+            hypernym_names = [h.name() for h in s.hypernyms()]
+            print(f"  - {s.definition()} ... Hypernyms: {hypernym_names}")
+
+print("-----")
+
+dire = it_nlp("dire")[0]._.wordnet.synsets()[0]
+comparison1 = it_nlp("pensare")[0]._.wordnet.synsets()[0]
+
+print("The Wu-Palmer similarity between 'dire' and 'pensare' is:",  dire.wup_similarity(comparison1))
+
+re = it_nlp("re")[0]._.wordnet.synsets()[0]
+comparison2 = it_nlp("bruco")[0]._.wordnet.synsets()[0]
+
+print("The Wu-Palmer similarity between 're' and 'bruco' is:",  re.wup_similarity(comparison2))
+```
+
+```{python}
+import spacy
+from nltk.corpus import wordnet as wn
+from nltk.corpus.reader.wordnet import NOUN, VERB, ADJ, ADV
+from spacy_wordnet.wordnet_annotator import WordnetAnnotator
+
+def get_wordnet_pos(spacy_pos):
+    if spacy_pos.startswith("N"):
+        return NOUN
+    elif spacy_pos.startswith("V"):
+        return VERB
+    elif spacy_pos.startswith("J"):
+        return ADJ
+    elif spacy_pos.startswith("R"):
+        return ADV
+    return None
+
+# SPANISH
+
+es_nlp = spacy.load("es_core_news_sm")
+es_nlp.add_pipe("spacy_wordnet", after='morphologizer')
+
+es_lemmas = ["", "decir", "ir", "pensar", "saber", "ver", "tiempo", "la cabeza", "la reina", "el rey", "la oruga"]
+es_text = " ".join(es_lemmas)
+es_doc = es_nlp(es_text)
+
+for token in es_doc:
+    wn_pos = get_wordnet_pos(token.tag_)
+    lemma = token.lemma_.lower()
+    if wn_pos:
+        synsets = wn.synsets(lemma, pos=wn_pos, lang='spa')
+        print(f"\n{token.text.upper()} ({token.pos_})")
+        for s in synsets[:3]:
+            hypernym_names = [h.name() for h in s.hypernyms()]
+            print(f"  - {s.definition()} ... Hypernyms: {hypernym_names}")
+
+print("-----")
+
+decir = es_nlp("decir")[0]._.wordnet.synsets()[0]
+comparison1 = es_nlp("pensar")[0]._.wordnet.synsets()[0]
+
+print("The Wu-Palmer similarity between 'decir' and 'pensar' is:",  decir.wup_similarity(comparison1))
+
+rey = es_nlp("rey")[0]._.wordnet.synsets()[0]
+comparison2 = es_nlp("oruga")[0]._.wordnet.synsets()[0]
+
+print("The Wu-Palmer similarity between 'rey' and 'oruga' is:",  rey.wup_similarity(comparison2))
+```
+
+```{python}
+import spacy
+from nltk.corpus import wordnet as wn
+from nltk.corpus.reader.wordnet import NOUN, VERB, ADJ, ADV
+from spacy_wordnet.wordnet_annotator import WordnetAnnotator
+
+def get_wordnet_pos(spacy_pos):
+    if spacy_pos.startswith("N"):
+        return NOUN
+    elif spacy_pos.startswith("V"):
+        return VERB
+    elif spacy_pos.startswith("J"):
+        return ADJ
+    elif spacy_pos.startswith("R"):
+        return ADV
+    return None
+
+# FRENCH
+
+fr_nlp = spacy.load("fr_core_news_sm")
+fr_nlp.add_pipe("spacy_wordnet", after='morphologizer')
+
+fr_lemmas = ["", "dire", "aller", "penser", "savoir", "voir", "temps", "tête", "reine", "roi", "chenille"]
+fr_text = " ".join(fr_lemmas)
+fr_doc = fr_nlp(fr_text)
+
+for token in fr_doc:
+    wn_pos = get_wordnet_pos(token.tag_)
+    lemma = token.lemma_.lower()
+    if wn_pos:
+        synsets = wn.synsets(lemma, pos=wn_pos, lang='fra')
+        print(f"\n{token.text.upper()} ({token.pos_})")
+        for s in synsets[:3]:
+            hypernym_names = [h.name() for h in s.hypernyms()]
+            print(f"  - {s.definition()} ... Hypernyms: {hypernym_names}")
+
+print("-----")
+
+dire = fr_nlp("dire")[0]._.wordnet.synsets()[0]
+comparison1 = fr_nlp("penser")[0]._.wordnet.synsets()[0]
+
+print("The Wu-Palmer similarity between 'dire' and 'penser' is:",  dire.wup_similarity(comparison1))
+
+roi = fr_nlp("roi")[0]._.wordnet.synsets()[0]
+comparison2 = fr_nlp("chenille")[0]._.wordnet.synsets()[0]
+
+print("The Wu-Palmer similarity between 'roi' and 'chenille' is:",  roi.wup_similarity(comparison2))
+```
+
+```{python}
+import spacy
+from nltk.corpus import wordnet as wn
+from nltk.corpus.reader.wordnet import NOUN, VERB, ADJ, ADV
+from spacy_wordnet.wordnet_annotator import WordnetAnnotator
+
+def get_wordnet_pos(spacy_pos):
+    if spacy_pos.startswith("N"):
+        return NOUN
+    elif spacy_pos.startswith("V"):
+        return VERB
+    elif spacy_pos.startswith("J"):
+        return ADJ
+    elif spacy_pos.startswith("R"):
+        return ADV
+    return None
+
+# FINNISH
+
+fi_nlp = spacy.load("fi_core_news_sm")
+fi_nlp.add_pipe("spacy_wordnet", after='morphologizer')
+
+fi_lemmas = ["", "sanoa", "mennä", "ajatella", "tietää", "nähdä", "aika", "pää", "kuningatar", "kuningas", "toukka"]
+fi_text = " ".join(fi_lemmas)
+fi_doc = fi_nlp(fi_text)
+
+for token in fi_doc:
+    wn_pos = get_wordnet_pos(token.tag_)
+    lemma = token.lemma_.lower()
+    if wn_pos:
+        synsets = wn.synsets(lemma, pos=wn_pos, lang='fin')
+        print(f"\n{token.text.upper()} ({token.pos_})")
+        for s in synsets[:3]:
+            hypernym_names = [h.name() for h in s.hypernyms()]
+            print(f"  - {s.definition()} ... Hypernyms: {hypernym_names}")
+
+print("-----")
+
+sanoa = fi_nlp("sanoa")[0]._.wordnet.synsets()[0]
+comparison1 = fi_nlp("ajatella")[0]._.wordnet.synsets()[0]
+
+print("The Wu-Palmer similarity between 'sanoa' and 'ajatella' is:",  sanoa.wup_similarity(comparison1))
+
+kuningas = fi_nlp("kuningas")[0]._.wordnet.synsets()[0]
+comparison2 = fi_nlp("toukka")[0]._.wordnet.synsets()[0]
+
+print("The Wu-Palmer similarity between 'kuningas' and 'toukka' is:",  kuningas.wup_similarity(comparison2))
+```
