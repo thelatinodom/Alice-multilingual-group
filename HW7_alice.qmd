@@ -673,10 +673,11 @@ The English translation has the sharpest drop-off in lemma usage, going from 'sa
 # Section 3: Bellamy
 
 ```{python}
-#VERBS
 import spacy
 import pandas as pd
 from collections import Counter
+
+#VERBS
 
 nlp_models = {
     'English': 'en_core_web_sm',
@@ -811,7 +812,7 @@ def main():
     print(summary_df.to_string(index=False))
     
     # save to CSV
-    summary_df.to_csv('alice_verbs_summary.csv', index=False)
+    summary_df.to_csv('figures/alice_verbs_summary.csv', index=False)
     
     return all_results, summary_df
 
@@ -819,10 +820,10 @@ def main():
 if __name__ == "__main__":
     results, summary = main()
     
+    
+    
+    
 #ADJECTIVES
-import spacy
-import pandas as pd
-from collections import Counter
 
 nlp_models = {
     'English': 'en_core_web_sm',
@@ -959,7 +960,7 @@ def main():
     print(summary_df.to_string(index=False))
     
     # save to CSV
-    summary_df.to_csv('alice_adjectives_summary.csv', index=False)
+    summary_df.to_csv('figures/alice_adjectives_summary.csv', index=False)
     
     return all_results, summary_df
 
@@ -968,15 +969,15 @@ if __name__ == "__main__":
     results, summary = main()
 ```
 
-English: The top verbs feel very true to the story. Alice is always "saying", "thinking", "replying", "beginning", or "looking" or those actions are being directed at her. The top adjectives also make sense and reveal the confusing and often uncomfortable scenarios Alice finds herself in.
+**English**: The top verbs feel very true to the story. Alice is always "saying", "thinking", "replying", "beginning", or "looking" or those actions are being directed at her. The top adjectives also make sense and reveal the confusing and often uncomfortable scenarios Alice finds herself in.
 
-French: The top verbs in French are similar to those in English. "Dire" is equivalent to "to say", "trouver" is "to find" and may also connote having an opinion/experience of something and so can relate to "thinking", "commencer" is "to begin", "sentir" is "to feel", and "savoir" is "to know". The adjectives also match the English, with the top five translating to "alone", "noticed" or "remarkable" (and in the sense of the story could be "peculiar"), "little", "indignant", and "hauty/proud". It is interesting that the French version seems to drop Alice's hunger, or at least focuses less on it, and instead focuses on how precocious she is.
+**French**: The top verbs in French are similar to those in English. "Dire" is equivalent to "to say", "trouver" is "to find" and may also connote having an opinion/experience of something and so can relate to "thinking", "commencer" is "to begin", "sentir" is "to feel", and "savoir" is "to know". The adjectives also match the English, with the top five translating to "alone", "noticed" or "remarkable" (and in the sense of the story could be "peculiar"), "little", "indignant", and "hauty/proud". It is interesting that the French version seems to drop Alice's hunger, or at least focuses less on it, and instead focuses on how precocious she is.
 
-Spanish: The Spanish verbs also follow the pattern of "thinking", "saying", "asking", "looking", and "beginning". The adjectives additionally have high counts of "poor" and "little" but also include "scared", which may be a way of communicating Alice's discomfort with her situation. However, there's also a high count of "interested", which reflects Alice's engagement with all that is "new" around her.
+**Spanish**: The Spanish verbs also follow the pattern of "thinking", "saying", "asking", "looking", and "beginning". The adjectives additionally have high counts of "poor" and "little" but also include "scared", which may be a way of communicating Alice's discomfort with her situation. However, there's also a high count of "interested", which reflects Alice's engagement with all that is "new" around her.
 
-Italian: The Italian verbs keep up with "saying", "responding/answering", "thinking", and "asking", and also includes "soggiunse" meaning "to add" (to a conversation). The Italian adjectives maintain the pattern of "poor" Alice, and continues Spanish's interest in all that is "new" and Alice being "amazed" at what she sees. It adds the new adjective of "all", which is interesting as it stands in opposition to English and French's emphasis on "alone", and might apply to the groups which Alice observes.
+**Italian**: The Italian verbs keep up with "saying", "responding/answering", "thinking", and "asking", and also includes "soggiunse" meaning "to add" (to a conversation). The Italian adjectives maintain the pattern of "poor" Alice, and continues Spanish's interest in all that is "new" and Alice being "amazed" at what she sees. It adds the new adjective of "all", which is interesting as it stands in opposition to English and French's emphasis on "alone", and might apply to the groups which Alice observes.
 
-Finnish: Finnish rounds out the collection of verbs with "saying", "answering", "asking", and "exclaiming", but also adds "believing" to the mix, giving the first instance of Alice's deeper questioning of the world she finds herself in and the new social norms she has to naviagte. As for adjectives, "white" leads the list, followed by "ready", "scared", "cheerful", and once again "little". It seems that Finnish focuses more on Alice's mood than her physical state, but it is also the first language to have a repeat of English's "ready", perhaps leaning into Alice's self-questioning within the story.
+**Finnish**: Finnish rounds out the collection of verbs with "saying", "answering", "asking", and "exclaiming", but also adds "believing" to the mix, giving the first instance of Alice's deeper questioning of the world she finds herself in and the new social norms she has to naviagte. As for adjectives, "white" leads the list, followed by "ready", "scared", "cheerful", and once again "little". It seems that Finnish focuses more on Alice's mood than her physical state, but it is also the first language to have a repeat of English's "ready", perhaps leaning into Alice's self-questioning within the story.
 
 # Section 4: Dylan
 
