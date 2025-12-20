@@ -266,7 +266,7 @@ for i, row in df.iterrows():
     plt.annotate(row['Language'], 
                  (row['Verb_score'], row['Noun_score']),
                  textcoords="offset points", 
-                 xytext=(-12,7.5), 
+                 xytext=(-12,8), 
                  ha='left')
 
 plt.title("WordNet Similarity Scores across Languages")
