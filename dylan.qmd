@@ -1,8 +1,4 @@
 ```{python}
-X
-```
-
-```{python}
 import spacy
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -88,31 +84,38 @@ for token in it_doc:
 print("-----")
 
 dire_synsets = it_nlp("dire")[0]._.wordnet.synsets()
-comparison1_synsets = it_nlp("pensare")[0]._.wordnet.synsets()
+pensare_synsets = it_nlp("pensare")[0]._.wordnet.synsets()
 
-if dire_synsets and comparison1_synsets:
-    dire = dire_synsets[0]
-    comparison1 = comparison1_synsets[0]
-    print("The Wu-Palmer similarity between 'dire' and 'pensare' is:", dire.wup_similarity(comparison1))
+
+
+
+if dire_synsets and pensare_synsets:
+    dire_syn = dire_synsets[0]
+    pensare_syn = pensare_synsets[0]
+    verb_score = dire_syn.wup_similarity(pensare_syn)
+    print("The Wu-Palmer similarity between 'dire' and 'pensare' is:", verb_score)
 else:
+    verb_score = None
     print("No WordNet synsets found for 'dire' or 'pensare'")
 
 print("--")
 
 re_synsets = it_nlp("re")[0]._.wordnet.synsets()
-comparison2_synsets = it_nlp("regina")[0]._.wordnet.synsets()
+regina_synsets = it_nlp("regina")[0]._.wordnet.synsets()
 
-if re_synsets and comparison2_synsets:
-    re = re_synsets[0]
-    comparison2 = comparison2_synsets[0]
-    print("The Wu-Palmer similarity between 're' and 'regina' is:", re.wup_similarity(comparison2))
+if re_synsets and regina_synsets:
+    re_syn = re_synsets[0]
+    regina_syn = regina_synsets[0]
+    noun_score = re_syn.wup_similarity(regina_syn)
+    print("The Wu-Palmer similarity between 're' and 'regina' is:", noun_score)
 else:
-    print("No WordNet synsets found for 're' and 'regina'") 
+    noun_score = None
+    print("No WordNet synsets found for 're' and 'regina'")
 
 results_data.append({
     "Language": "Italian",
-    "Noun_score": re.wup_similarity(comparison2),
-    "Verb_score": dire.wup_similarity(comparison1)
+    "Noun_score": noun_score,
+    "Verb_score": verb_score
 })
 
 # SPANISH
@@ -204,7 +207,7 @@ print("--")
 roi_synsets = fr_nlp("roi")[0]._.wordnet.synsets()
 comparison2_synsets = fr_nlp("reine")[0]._.wordnet.synsets()
 
-if dire_synsets and comparison2_synsets:
+if roi_synsets and comparison2_synsets:
     roi = roi_synsets[0]
     comparison2 = comparison2_synsets[0]
     print("The Wu-Palmer similarity between 'roi' and 'reine' is:",  roi.wup_similarity(comparison2))
@@ -259,9 +262,13 @@ results_data.append({
 df = pd.DataFrame(results_data)
 print(df)
 
+
+#FIGURE PLOT
+plot_df = df.fillna(0)
+
 plt.figure(figsize=(8, 6))
 
-for i, row in df.iterrows():
+for _, row in plot_df.iterrows():
     plt.scatter(row['Verb_score'], row['Noun_score'], s=100)
     plt.annotate(row['Language'], 
                  (row['Verb_score'], row['Noun_score']),
@@ -275,6 +282,8 @@ plt.ylabel("Noun Similarity Score (king/queen)")
 plt.grid(True, linestyle='--', alpha=0.6)
 plt.xlim(0, 0.6)
 plt.ylim(0, 0.8)
+
+plt.savefig("figures/WordNet Similarity Scores across Languages.png")
 
 plt.show()
 ```

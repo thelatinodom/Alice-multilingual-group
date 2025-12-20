@@ -982,5 +982,291 @@ if __name__ == "__main__":
 # Section 4: Dylan
 
 ```{python}
+import spacy
+import pandas as pd
+import matplotlib.pyplot as plt
+from nltk.corpus import wordnet as wn
+from nltk.corpus.reader.wordnet import NOUN, VERB, ADJ, ADV
+from spacy_wordnet.wordnet_annotator import WordnetAnnotator
 
+def get_wordnet_pos(spacy_pos):
+    if spacy_pos.startswith("N"):
+        return NOUN
+    elif spacy_pos.startswith("S"):
+        return NOUN
+    elif spacy_pos.startswith("V"):
+        return VERB
+    elif spacy_pos.startswith("J"):
+        return ADJ
+    elif spacy_pos.startswith("R"):
+        return ADV
+    return None
+
+results_data = []
+
+# ENGLISH
+print("-----")
+print("ENGLISH")
+
+en_nlp = spacy.load("en_core_web_sm")
+en_nlp.add_pipe("spacy_wordnet", after='tagger')
+
+en_lemmas = ["", "say", "go", "think", "know", "see", "time", "head", "queen", "king", "caterpillar"]
+en_text = " ".join(en_lemmas)
+en_doc = en_nlp(en_text)
+
+for token in en_doc:
+    wn_pos = get_wordnet_pos(token.tag_)
+    lemma = token.lemma_.lower()
+    if wn_pos:
+        synsets = wn.synsets(lemma, pos=wn_pos)
+        print(f"\n{token.text.upper()} ({token.pos_})")
+        for s in synsets[:3]:
+            hypernym_names = [h.name() for h in s.hypernyms()]
+            print(f"  - {s.definition()} ... Hypernyms: {hypernym_names}")
+
+print("-----")
+
+say = en_nlp("say")[0]._.wordnet.synsets()[0]
+comparison1 = en_nlp("think")[0]._.wordnet.synsets()[0]
+
+print("The Wu-Palmer similarity between 'say' and 'think' is:",  say.wup_similarity(comparison1))
+
+king = en_nlp("king")[0]._.wordnet.synsets()[0]
+comparison2 = en_nlp("queen")[0]._.wordnet.synsets()[0]
+
+print("The Wu-Palmer similarity between 'king' and 'queen' is:",  king.wup_similarity(comparison2))
+
+results_data.append({
+    "Language": "English",
+    "Noun_score": king.wup_similarity(comparison2),
+    "Verb_score": say.wup_similarity(comparison1)
+})
+
+# ITALIAN
+print("-----")
+print("ITALIAN")
+
+it_nlp = spacy.load("it_core_news_sm")
+it_nlp.add_pipe("spacy_wordnet", after='tagger')
+
+it_lemmas = ["", "dire", "andare", "pensare", "sapere", "vedere", "tempo", "testa", "regina", "re", "bruco"]
+it_text = " ".join(it_lemmas)
+it_doc = it_nlp(it_text)
+
+for token in it_doc:
+    wn_pos = get_wordnet_pos(token.tag_)
+    lemma = token.lemma_.lower()
+    if wn_pos:
+        synsets = wn.synsets(lemma, pos=wn_pos, lang='ita')
+        print(f"\n{token.text.upper()} ({token.pos_})")
+        for s in synsets[:3]:
+            hypernym_names = [h.name() for h in s.hypernyms()]
+            print(f"  - {s.definition()} ... Hypernyms: {hypernym_names}")
+
+print("-----")
+
+dire_synsets = it_nlp("dire")[0]._.wordnet.synsets()
+pensare_synsets = it_nlp("pensare")[0]._.wordnet.synsets()
+
+
+
+
+if dire_synsets and pensare_synsets:
+    dire_syn = dire_synsets[0]
+    pensare_syn = pensare_synsets[0]
+    verb_score = dire_syn.wup_similarity(pensare_syn)
+    print("The Wu-Palmer similarity between 'dire' and 'pensare' is:", verb_score)
+else:
+    verb_score = None
+    print("No WordNet synsets found for 'dire' or 'pensare'")
+
+print("--")
+
+re_synsets = it_nlp("re")[0]._.wordnet.synsets()
+regina_synsets = it_nlp("regina")[0]._.wordnet.synsets()
+
+if re_synsets and regina_synsets:
+    re_syn = re_synsets[0]
+    regina_syn = regina_synsets[0]
+    noun_score = re_syn.wup_similarity(regina_syn)
+    print("The Wu-Palmer similarity between 're' and 'regina' is:", noun_score)
+else:
+    noun_score = None
+    print("No WordNet synsets found for 're' and 'regina'")
+
+results_data.append({
+    "Language": "Italian",
+    "Noun_score": noun_score,
+    "Verb_score": verb_score
+})
+
+# SPANISH
+print("-----")
+print("SPANISH")
+
+es_nlp = spacy.load("es_core_news_sm")
+es_nlp.add_pipe("spacy_wordnet", after='morphologizer')
+
+es_lemmas = ["", "decir", "ir", "pensar", "saber", "ver", "tiempo", "la cabeza", "la reina", "el rey", "la oruga"]
+es_text = " ".join(es_lemmas)
+es_doc = es_nlp(es_text)
+
+for token in es_doc:
+    wn_pos = get_wordnet_pos(token.tag_)
+    lemma = token.lemma_.lower()
+    if wn_pos:
+        synsets = wn.synsets(lemma, pos=wn_pos, lang='spa')
+        print(f"\n{token.text.upper()} ({token.pos_})")
+        for s in synsets[:3]:
+            hypernym_names = [h.name() for h in s.hypernyms()]
+            print(f"  - {s.definition()} ... Hypernyms: {hypernym_names}")
+
+print("-----")
+
+decir_synsets = es_nlp("decir")[0]._.wordnet.synsets()
+comparison1_synsets = es_nlp("pensar")[0]._.wordnet.synsets()
+
+if decir_synsets and comparison1_synsets:
+    decir = decir_synsets[0]
+    comparison1 = comparison1_synsets[0]
+    print("The Wu-Palmer similarity between 'decir' and 'pensar' is:",  decir.wup_similarity(comparison1))
+else: 
+  print("No WordNet synsets found for 'decir' and 'pensar'")  
+  
+print("--")
+
+rey_synsets = es_nlp("rey")[0]._.wordnet.synsets()
+comparison2_synsets = es_nlp("reina")[0]._.wordnet.synsets()
+
+if rey_synsets and comparison2_synsets:
+    rey = rey_synsets[0]
+    comparison2 = comparison2_synsets[0]
+    print("The Wu-Palmer similarity between 'rey' and 'reina' is:",  rey.wup_similarity(comparison2))
+else: 
+  print("No WordNet synsets found for 'rey' and 'reina'") 
+
+results_data.append({
+    "Language": "Spanish",
+    "Noun_score": rey.wup_similarity(comparison2),
+    "Verb_score": decir.wup_similarity(comparison1)
+})
+
+# FRENCH
+print("-----")
+print("FRENCH")
+
+fr_nlp = spacy.load("fr_core_news_sm")
+fr_nlp.add_pipe("spacy_wordnet", after='morphologizer')
+
+fr_lemmas = ["", "dire", "aller", "penser", "savoir", "voir", "temps", "tête", "reine", "roi", "chenille"]
+fr_text = " ".join(fr_lemmas)
+fr_doc = fr_nlp(fr_text)
+
+for token in fr_doc:
+    wn_pos = get_wordnet_pos(token.tag_)
+    lemma = token.lemma_.lower()
+    if wn_pos:
+        synsets = wn.synsets(lemma, pos=wn_pos, lang='fra')
+        print(f"\n{token.text.upper()} ({token.pos_})")
+        for s in synsets[:3]:
+            hypernym_names = [h.name() for h in s.hypernyms()]
+            print(f"  - {s.definition()} ... Hypernyms: {hypernym_names}")
+
+print("-----")
+
+dire_synsets = fr_nlp("dire")[0]._.wordnet.synsets()
+comparison1_synsets = fr_nlp("penser")[0]._.wordnet.synsets()
+
+if dire_synsets and comparison1_synsets:
+    dire = dire_synsets[0]
+    comparison1 = comparison1_synsets[0]
+    print("The Wu-Palmer similarity between 'dire' and 'penser' is:",  dire.wup_similarity(comparison1))
+else: 
+  print("No WordNet synsets found for 'decir' and 'pensar'")  
+  
+print("--")
+
+roi_synsets = fr_nlp("roi")[0]._.wordnet.synsets()
+comparison2_synsets = fr_nlp("reine")[0]._.wordnet.synsets()
+
+if roi_synsets and comparison2_synsets:
+    roi = roi_synsets[0]
+    comparison2 = comparison2_synsets[0]
+    print("The Wu-Palmer similarity between 'roi' and 'reine' is:",  roi.wup_similarity(comparison2))
+else: 
+  print("No WordNet synsets found for 'roi' and 'reine'")  
+
+results_data.append({
+    "Language": "French",
+    "Noun_score": roi.wup_similarity(comparison2),
+    "Verb_score": dire.wup_similarity(comparison1)
+})
+
+# FINNISH
+print("-----")
+print("FINNISH")
+
+fi_nlp = spacy.load("fi_core_news_sm")
+fi_nlp.add_pipe("spacy_wordnet", after='morphologizer')
+
+fi_lemmas = ["", "sanoa", "mennä", "ajatella", "tietää", "nähdä", "aika", "pää", "kuningatar", "kuningas", "toukka"]
+fi_text = " ".join(fi_lemmas)
+fi_doc = fi_nlp(fi_text)
+
+for token in fi_doc:
+    wn_pos = get_wordnet_pos(token.tag_)
+    lemma = token.lemma_.lower()
+    if wn_pos:
+        synsets = wn.synsets(lemma, pos=wn_pos, lang='fin')
+        print(f"\n{token.text.upper()} ({token.pos_})")
+        for s in synsets[:3]:
+            hypernym_names = [h.name() for h in s.hypernyms()]
+            print(f"  - {s.definition()} ... Hypernyms: {hypernym_names}")
+
+print("-----")
+
+sanoa = fi_nlp("sanoa")[0]._.wordnet.synsets()[0]
+comparison1 = fi_nlp("ajatella")[0]._.wordnet.synsets()[0]
+
+print("The Wu-Palmer similarity between 'sanoa' and 'ajatella' is:",  sanoa.wup_similarity(comparison1))
+
+kuningas = fi_nlp("kuningas")[0]._.wordnet.synsets()[0]
+comparison2 = fi_nlp("kuningatar")[0]._.wordnet.synsets()[0]
+
+print("The Wu-Palmer similarity between 'kuningas' and 'kuningatar' is:",  kuningas.wup_similarity(comparison2))
+
+results_data.append({
+    "Language": "Finnish",
+    "Noun_score": kuningas.wup_similarity(comparison2),
+    "Verb_score": sanoa.wup_similarity(comparison1)
+})
+
+df = pd.DataFrame(results_data)
+print(df)
+
+
+#FIGURE PLOT
+plot_df = df.fillna(0)
+
+plt.figure(figsize=(8, 6))
+
+for _, row in plot_df.iterrows():
+    plt.scatter(row['Verb_score'], row['Noun_score'], s=100)
+    plt.annotate(row['Language'], 
+                 (row['Verb_score'], row['Noun_score']),
+                 textcoords="offset points", 
+                 xytext=(-12,8), 
+                 ha='left')
+
+plt.title("WordNet Similarity Scores across Languages")
+plt.xlabel("Verb Similarity Score (say/think)")
+plt.ylabel("Noun Similarity Score (king/queen)")
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.xlim(0, 0.6)
+plt.ylim(0, 0.8)
+
+plt.savefig("figures/WordNet Similarity Scores across Languages.png")
+
+plt.show()
 ```
